@@ -77,51 +77,56 @@ function Hero() {
   ];
 
   return (
-    <section id="giris" className="bg-surface min-h-[calc(100dvh-72px)] flex flex-col justify-center">
-      <div className="mx-auto max-w-7xl w-full px-6 sm:px-12 py-10">
-        <div className="grid lg:grid-cols-12 gap-12 items-center">
+    <section id="giris" className="bg-surface min-h-[calc(100dvh-72px)] flex flex-col relative">
 
-          {/* Sol metin — 5 / 12 */}
-          <div className="lg:col-span-5">
-            <span className="bg-brand-light text-brand rounded-full px-4 py-1.5 text-[13px] font-semibold inline-block mb-6">
-              PISA &amp; TIMSS Standartlarında Ölçme
-            </span>
+      {/* Mobil arka plan — bulanık fotoğraf */}
+      <div className="absolute inset-0 lg:hidden overflow-hidden">
+        <Image src="/images/hero-child.png" alt="" fill className="object-cover object-center scale-110 blur-md" />
+        <div className="absolute inset-0 bg-brand/70" />
+      </div>
 
-            <h1 className="text-[44px] lg:text-[66px] font-extrabold text-brand leading-none">
-              Her Çocuk<br />
-              Aynı Yerden<br />
-              <span className="text-accent-yellow italic">&ldquo;Başlamaz.&rdquo;</span>
-            </h1>
+      {/* Desktop layout */}
+      <div className="hidden lg:flex flex-col justify-center flex-1">
+        <div className="mx-auto max-w-7xl w-full px-6 sm:px-12 py-10">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
 
-            <p className="text-[16px] lg:text-[17px] text-muted mt-5 max-w-md leading-relaxed">
-              Matroskop bireysel ölçme sistemi, öğrencileri PISA ve TIMSS kriterlerine
-              göre analiz eder. Her öğrenciye seviyesine uygun öğrenme yolu oluşturulur.
-            </p>
-
-            <div className="mt-7 flex flex-col sm:flex-row gap-4">
-              <button className="bg-brand text-white rounded-full px-8 py-4 font-semibold flex items-center justify-center gap-2 hover:shadow-lg transition-shadow">
-                Örnek Raporu İncele
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              <button className="bg-surface-section text-brand rounded-full px-8 py-4 font-semibold hover:opacity-80 transition-opacity">
-                Nasıl Çalışır?
-              </button>
+            {/* Sol metin — 5/12 */}
+            <div className="lg:col-span-5">
+              <span className="bg-brand-light text-brand rounded-full px-4 py-1.5 text-[13px] font-semibold inline-block mb-6">
+                PISA &amp; TIMSS Standartlarında Ölçme
+              </span>
+              <h1 className="text-[44px] lg:text-[66px] font-extrabold text-brand leading-none">
+                Her Çocuk<br />
+                Aynı Yerden<br />
+                <span className="text-accent-yellow italic">&ldquo;Başlamaz.&rdquo;</span>
+              </h1>
+              <p className="text-[16px] lg:text-[17px] text-muted mt-5 max-w-md leading-relaxed">
+                Matroskop bireysel ölçme sistemi, öğrencileri PISA ve TIMSS kriterlerine
+                göre analiz eder. Her öğrenciye seviyesine uygun öğrenme yolu oluşturulur.
+              </p>
+              <div className="mt-7 flex flex-row gap-4">
+                <button className="bg-brand text-white rounded-full px-8 py-4 font-semibold flex items-center gap-2 hover:shadow-lg transition-shadow">
+                  Örnek Raporu İncele
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                <button className="bg-surface-section text-brand rounded-full px-8 py-4 font-semibold hover:opacity-80 transition-opacity">
+                  Nasıl Çalışır?
+                </button>
+              </div>
+              <div className="mt-8 flex flex-wrap gap-3">
+                {features.map(({ icon: Icon, label }) => (
+                  <div key={label} className="flex items-center gap-2 text-[12px] lg:text-[13px] text-brand/80 font-medium">
+                    <span className="bg-brand-light rounded-lg p-1.5 text-brand flex-shrink-0">
+                      <Icon className="w-3.5 h-3.5" />
+                    </span>
+                    {label}
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              {features.map(({ icon: Icon, label }) => (
-                <div key={label} className="flex items-center gap-2 text-[12px] lg:text-[13px] text-brand/80 font-medium">
-                  <span className="bg-brand-light rounded-lg p-1.5 text-brand flex-shrink-0">
-                    <Icon className="w-3.5 h-3.5" />
-                  </span>
-                  {label}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Sağ görsel + mockup — 7 / 12 */}
-          <div className="lg:col-span-7 relative">
+            {/* Sağ görsel + mockup — 7/12 */}
+            <div className="lg:col-span-7 relative">
 
             {/* Fotoğraf — overflow-visible ki kartlar dışa taşabilsin */}
             <div className="relative w-full h-[400px] lg:h-[560px]">
@@ -201,8 +206,49 @@ function Hero() {
             </div>{/* /fotoğraf relative wrapper */}
           </div>{/* /col-span-7 */}
 
+          </div>{/* /grid */}
+        </div>{/* /mx-auto */}
+      </div>{/* /desktop layout */}
+
+      {/* Mobil layout */}
+      <div className="flex lg:hidden flex-col flex-1 relative z-10 px-6 py-8">
+        <div>
+          <span className="bg-white/20 text-white rounded-full px-3 py-1 text-[12px] font-semibold inline-block mb-5">
+            PISA &amp; TIMSS Standartlarında Ölçme
+          </span>
+          <h1 className="text-[38px] font-extrabold text-white leading-tight">
+            Her Çocuk<br />
+            Aynı Yerden<br />
+            <span className="text-accent-yellow italic">&ldquo;Başlamaz.&rdquo;</span>
+          </h1>
+          <p className="text-[15px] text-white/80 mt-4 leading-relaxed">
+            Matroskop bireysel ölçme sistemi, öğrencileri PISA ve TIMSS kriterlerine
+            göre analiz eder. Her öğrenciye seviyesine uygun öğrenme yolu oluşturulur.
+          </p>
+          <div className="mt-6 flex gap-6">
+            {[
+              { value: '500+', label: 'Kayıtlı Kurum' },
+              { value: '10K+', label: 'Test Uygulanan Öğrenci' },
+            ].map(stat => (
+              <div key={stat.value}>
+                <div className="text-2xl font-black text-white">{stat.value}</div>
+                <div className="text-[11px] text-white/60 mt-0.5">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-auto pt-8 flex flex-col gap-3">
+          <button className="bg-accent-yellow text-brand rounded-full px-6 py-4 font-bold flex items-center justify-center gap-2">
+            Örnek Raporu İncele
+            <ArrowRight className="w-4 h-4" />
+          </button>
+          <button className="bg-white/20 text-white border border-white/30 rounded-full px-6 py-4 font-semibold">
+            Nasıl Çalışır?
+          </button>
         </div>
       </div>
+
     </section>
   );
 }
