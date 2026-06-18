@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import {
   Menu, X, Phone, Mail, MapPin, ArrowRight,
   Target, BarChart2, BookOpen, TrendingUp, Shield,
-  ClipboardCheck, Plus, Star, Users, BookMarked,
+  Plus, Star, Users, BookMarked,
   GraduationCap, Headphones, DollarSign, Handshake,
   CheckCircle,
 } from 'lucide-react';
@@ -23,7 +23,7 @@ function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 h-[72px] flex items-center bg-white/90 backdrop-blur-md border-b border-surface-section">
+    <nav className="sticky top-0 z-50 h-[72px] flex items-center relative bg-white/90 backdrop-blur-md border-b border-surface-section">
       <div className="mx-auto max-w-7xl w-full px-6 sm:px-12 flex items-center justify-between">
         <a href="#giris" className="flex items-center">
           <div className="relative h-10 w-40">
@@ -49,7 +49,7 @@ function Navbar() {
       </div>
 
       {open && (
-        <div className="border-t border-surface-section bg-white md:hidden">
+        <div className="absolute top-full left-0 right-0 bg-white border-b border-surface-section shadow-lg md:hidden z-50">
           <div className="flex flex-col gap-3 px-6 py-4">
             {links.map(({ label, href }) => (
               <a key={label} href={href} className="text-sm font-medium text-brand/80" onClick={() => setOpen(false)}>
@@ -105,13 +105,10 @@ function Hero() {
                 göre analiz eder. Her öğrenciye seviyesine uygun öğrenme yolu oluşturulur.
               </p>
               <div className="mt-7 flex flex-row gap-4">
-                <button className="bg-brand text-white rounded-full px-8 py-4 font-semibold flex items-center gap-2 hover:shadow-lg transition-shadow">
-                  Örnek Raporu İncele
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-                <button className="bg-surface-section text-brand rounded-full px-8 py-4 font-semibold hover:opacity-80 transition-opacity">
+                <a href="#nasil" className="bg-brand text-white rounded-full px-10 py-4 text-[17px] font-semibold hover:shadow-lg transition-shadow inline-flex items-center gap-2">
                   Nasıl Çalışır?
-                </button>
+                  <ArrowRight className="w-5 h-5" />
+                </a>
               </div>
               <div className="mt-8 flex flex-wrap gap-3">
                 {features.map(({ icon: Icon, label }) => (
@@ -238,14 +235,20 @@ function Hero() {
           </div>
         </div>
 
-        <div className="mt-auto pt-8 flex flex-col gap-3">
-          <button className="bg-accent-yellow text-brand rounded-full px-6 py-4 font-bold flex items-center justify-center gap-2">
-            Örnek Raporu İncele
-            <ArrowRight className="w-4 h-4" />
-          </button>
-          <button className="bg-white/20 text-white border border-white/30 rounded-full px-6 py-4 font-semibold">
+        <div className="mt-auto pt-6 flex flex-wrap gap-2 mb-4">
+          {features.map(({ icon: Icon, label }) => (
+            <div key={label} className="flex items-center gap-1.5 bg-white/10 rounded-full px-3 py-1.5">
+              <Icon className="w-3 h-3 text-accent-yellow flex-shrink-0" />
+              <span className="text-[11px] text-white/90 font-medium">{label}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <a href="#nasil" className="bg-accent-yellow text-brand rounded-full px-6 py-4 text-[16px] font-bold text-center inline-flex items-center justify-center gap-2">
             Nasıl Çalışır?
-          </button>
+            <ArrowRight className="w-5 h-5" />
+          </a>
         </div>
       </div>
 
@@ -285,9 +288,9 @@ function LearningFramework() {
   ];
 
   return (
-    <section id="matroskop" className="bg-surface min-h-dvh flex flex-col justify-center py-10">
+    <section id="matroskop" className="bg-surface lg:min-h-dvh flex flex-col justify-center py-10">
       <div className="mx-auto max-w-7xl w-full px-6 sm:px-12">
-        <div className="grid lg:grid-cols-12 gap-16 items-center">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-center">
 
           {/* Sol metin — 5 / 12 */}
           <div className="lg:col-span-5">
@@ -338,8 +341,8 @@ function LearningFramework() {
             </div>
           </div>
 
-          {/* Sağ görsel + dashboard — 7 / 12 */}
-          <div className="lg:col-span-7 relative">
+          {/* Sağ görsel + dashboard — 7 / 12, mobilde gizli */}
+          <div className="hidden lg:block lg:col-span-7 relative">
             <div className="relative w-full h-[400px] lg:h-[500px]">
 
               {/* Fotoğraf kırpma katmanı */}
@@ -402,10 +405,10 @@ function LearningFramework() {
 // ─── NASIL ÇALIŞIR ────────────────────────────────────────────────────────────
 function HowItWorks() {
   const steps = [
-    { num: '01', icon: ClipboardCheck, title: 'Testi Uygula',         desc: 'Çevrim içi veya Matroskop Noktasında sınava gir.',                        numColor: 'text-accent-yellow',   iconBg: 'bg-accent-yellow/40',   border: 'border-accent-yellow/30' },
-    { num: '02', icon: BarChart2,      title: 'Raporu Gör',           desc: "A1'den C2'ye uzanan seviye sisteminde konumunu öğren.",                   numColor: 'text-accent-blue',     iconBg: 'bg-accent-blue/40',     border: 'border-accent-blue/30'   },
-    { num: '03', icon: BookOpen,       title: 'Plan Al',              desc: 'Kişiselleştirilmiş öğrenme rotanı ve haftalık planını al.',               numColor: 'text-accent-green',    iconBg: 'bg-accent-green/40',    border: 'border-accent-green/30'  },
-    { num: '04', icon: TrendingUp,     title: 'Gelişimini Takip Et',  desc: 'Sürekli ölçme ve değerlendirme ile ilerlemeni izle.',                    numColor: 'text-brand/30',        iconBg: 'bg-brand-light',        border: 'border-brand/15'         },
+    { num: '01', title: 'Testi Uygula',         desc: 'Çevrim içi veya Matroskop Noktasında sınava gir.',              numColor: 'text-accent-yellow', border: 'border-accent-yellow/30' },
+    { num: '02', title: 'Raporu Gör',           desc: "A1'den C2'ye uzanan seviye sisteminde konumunu öğren.",         numColor: 'text-accent-blue',   border: 'border-accent-blue/30'   },
+    { num: '03', title: 'Plan Al',              desc: 'Kişiselleştirilmiş öğrenme rotanı ve haftalık planını al.',    numColor: 'text-accent-green',  border: 'border-accent-green/30'  },
+    { num: '04', title: 'Gelişimini Takip Et',  desc: 'Sürekli ölçme ve değerlendirme ile ilerlemeni izle.',          numColor: 'text-brand/30',      border: 'border-brand/15'         },
   ];
 
   return (
@@ -418,19 +421,16 @@ function HowItWorks() {
           <h2 className="text-[32px] lg:text-[48px] font-bold text-brand">Nasıl Çalışır?</h2>
         </div>
 
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-5 mt-12">
-          {steps.map(({ num, icon: Icon, title, desc, numColor, iconBg, border }) => (
-            <div key={num} className={`bg-white rounded-3xl p-8 shadow-sm relative overflow-hidden border ${border}`}>
-              <div className={`absolute -top-2 -left-1 text-8xl font-black z-0 select-none leading-none ${numColor}`}>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+          {steps.map(({ num, title, desc, numColor, border }) => (
+            <div key={num} className={`bg-white rounded-2xl md:rounded-3xl p-4 md:p-8 shadow-sm relative overflow-hidden border ${border}`}>
+              <div className={`absolute -top-1 -left-1 text-5xl md:text-8xl font-black z-0 select-none leading-none ${numColor}`}>
                 {num}
               </div>
-              <div className="relative z-10">
-                <span className={`${iconBg} rounded-xl p-3 text-brand w-fit flex mb-4`}>
-                  <Icon className="w-5 h-5" />
-                </span>
-                <h3 className="font-bold text-brand text-[18px]">{title}</h3>
-                <p className="text-muted text-[14px] leading-relaxed mt-2">{desc}</p>
-                <div className="mt-6 ml-auto w-8 h-8 bg-accent-yellow rounded-full flex items-center justify-center">
+              <div className="relative z-10 pt-6 md:pt-8">
+                <h3 className="font-bold text-brand text-[13px] md:text-[18px]">{title}</h3>
+                <p className="text-muted text-[11px] md:text-[14px] leading-relaxed mt-1.5 md:mt-2">{desc}</p>
+                <div className="hidden md:flex mt-6 ml-auto w-8 h-8 bg-accent-yellow rounded-full items-center justify-center">
                   <ArrowRight className="w-4 h-4 text-brand" />
                 </div>
               </div>
@@ -449,7 +449,7 @@ function EmphasisCards() {
       <div className="mx-auto max-w-7xl">
         <div className="grid md:grid-cols-2 gap-5">
 
-          <div className="bg-accent-green rounded-3xl p-8 lg:p-10 h-72 lg:h-80 flex justify-between items-center overflow-hidden">
+          <div className="bg-accent-green rounded-3xl p-8 lg:p-10 flex justify-between items-center overflow-hidden min-h-[160px] lg:h-80">
             <div>
               <span className="bg-white/40 text-brand rounded-full px-3 py-1 text-[12px] font-medium inline-block">
                 Bireysel Analiz
@@ -461,12 +461,12 @@ function EmphasisCards() {
                 Potansiyelin bütünsel analizi ve gelişim alanları.
               </p>
             </div>
-            <div className="relative w-32 h-48 lg:w-40 lg:h-64 flex-shrink-0">
+            <div className="hidden sm:block relative w-32 h-48 lg:w-40 lg:h-64 flex-shrink-0">
               <Image src="/images/emphasis-analysis.png" alt="Analiz" fill className="object-contain drop-shadow-xl" />
             </div>
           </div>
 
-          <div className="bg-accent-yellow rounded-3xl p-8 lg:p-10 h-72 lg:h-80 flex justify-between items-center overflow-hidden">
+          <div className="bg-accent-yellow rounded-3xl p-8 lg:p-10 flex justify-between items-center overflow-hidden min-h-[160px] lg:h-80">
             <div>
               <span className="bg-white/40 text-brand rounded-full px-3 py-1 text-[12px] font-medium inline-block">
                 Kişiselleştirilmiş
@@ -478,7 +478,7 @@ function EmphasisCards() {
                 Seviyeye uygun hedef odaklı kişisel gelişim planı.
               </p>
             </div>
-            <div className="relative w-32 h-48 lg:w-40 lg:h-64 flex-shrink-0">
+            <div className="hidden sm:block relative w-32 h-48 lg:w-40 lg:h-64 flex-shrink-0">
               <Image src="/images/emphasis-program.png" alt="Program" fill className="object-contain drop-shadow-xl" />
             </div>
           </div>
@@ -499,13 +499,13 @@ function About() {
   ];
 
   return (
-    <section id="hakkimizda" className="bg-surface min-h-dvh flex flex-col justify-center py-10">
+    <section id="hakkimizda" className="bg-surface lg:min-h-dvh flex flex-col justify-center py-10">
       <div className="mx-auto max-w-7xl w-full px-6 sm:px-12">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
           {/* Sol fotoğraf — 5 / 12 */}
           <div className="lg:col-span-5 relative">
-            <div className="relative h-[400px] lg:h-[560px] rounded-3xl overflow-hidden">
+            <div className="relative h-[240px] sm:h-[340px] lg:h-[560px] rounded-3xl overflow-hidden">
               <Image src="/images/student-studying.png" alt="Öğrenci çalışıyor" fill className="object-cover" />
             </div>
             <div className="absolute bottom-8 right-0 bg-white rounded-2xl shadow-xl p-4 flex gap-3 items-center">
@@ -573,7 +573,7 @@ function Testimonials() {
   ];
 
   return (
-    <section className="bg-[#0d1f2d] min-h-dvh flex flex-col justify-center py-10">
+    <section className="bg-[#0d1f2d] lg:min-h-dvh flex flex-col justify-center py-10">
       <div className="mx-auto max-w-7xl w-full px-6 sm:px-12">
         <div className="text-center mb-12">
           <span className="bg-white/10 text-white/60 rounded-full px-4 py-1.5 text-[13px] font-semibold inline-block mb-4">
@@ -585,14 +585,14 @@ function Testimonials() {
           </h2>
         </div>
 
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
           {items.map((item, i) => (
-            <div key={i} className="bg-white/5 border border-white/10 rounded-3xl p-7">
-              <div className="text-5xl font-black text-accent-yellow leading-none">&ldquo;</div>
-              <p className="text-white/80 text-[15px] leading-relaxed mt-3">{item.quote}</p>
-              <div className="mt-6 pt-4 border-t border-white/10">
-                <div className="font-bold text-white text-[14px]">{item.author}</div>
-                <div className="text-white/50 text-[12px]">{item.role}</div>
+            <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-4 md:rounded-3xl md:p-7 flex flex-col">
+              <div className="text-3xl md:text-5xl font-black text-accent-yellow leading-none">&ldquo;</div>
+              <p className="text-white/80 text-[12px] md:text-[15px] leading-relaxed mt-2 md:mt-3 flex-1">{item.quote}</p>
+              <div className="mt-3 md:mt-6 pt-3 md:pt-4 border-t border-white/10">
+                <div className="font-bold text-white text-[12px] md:text-[14px]">{item.author}</div>
+                <div className="text-white/50 text-[11px] md:text-[12px]">{item.role}</div>
               </div>
             </div>
           ))}
@@ -612,7 +612,7 @@ function Dealers() {
   ];
 
   return (
-    <section id="bayiler" className="bg-surface min-h-dvh flex flex-col justify-center py-10">
+    <section id="bayiler" className="bg-surface lg:min-h-dvh flex flex-col justify-center py-10">
       <div className="mx-auto max-w-7xl w-full px-6 sm:px-12">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
 
@@ -702,7 +702,7 @@ function Dealers() {
 // ─── İLETİŞİM ────────────────────────────────────────────────────────────────
 function Contact() {
   return (
-    <section id="iletisim" className="bg-surface-section min-h-dvh flex flex-col justify-center py-10">
+    <section id="iletisim" className="bg-surface-section lg:min-h-dvh flex flex-col justify-center py-10">
       <div className="mx-auto max-w-7xl w-full px-6 sm:px-12">
         <div className="grid lg:grid-cols-2 gap-12">
 
@@ -799,7 +799,7 @@ function FAQ() {
   ];
 
   return (
-    <section className="bg-surface min-h-dvh flex flex-col justify-center py-10">
+    <section className="bg-surface py-16">
       <div className="mx-auto max-w-7xl w-full px-6 sm:px-12">
         <h2 className="text-[32px] lg:text-[48px] font-bold text-brand text-center">
           Sıkça Sorulan Sorular
@@ -887,7 +887,7 @@ export default function AnasayfaPage() {
       <Hero />
       <StatsBar />
       <LearningFramework />
-      <section id="nasil" className="bg-surface-section min-h-dvh flex flex-col justify-center">
+      <section id="nasil" className="bg-surface-section lg:min-h-dvh flex flex-col justify-center">
         <HowItWorks />
         <EmphasisCards />
       </section>
