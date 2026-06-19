@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npx prisma *)",
+      "Bash(pkill -f \"prisma migrate\")",
+      "Bash(node -e \"console.log\\(require\\('crypto'\\).randomBytes\\(32\\).toString\\('hex'\\)\\)\")",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:3000 -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s http://localhost:3001/anasayfa -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s http://localhost:3001/giris -o /dev/null -w \"%{http_code}\")",
+      "Bash(npx tsc *)",
+      "Bash(node -e \"require\\('lucide-react'\\)\")",
+      "Bash(npx next *)",
+      "Bash(node -e \"require\\('fs'\\).readFileSync\\('/Users/cancati/Desktop/Projects/matroskop/src/app/\\(panel\\)/okul-yoneticisi/ogretmenler/page.tsx', 'utf8'\\).includes\\('Ogretmenler'\\) && console.log\\('ok'\\)\")",
+      "Bash(mkdir -p \\\\ *)",
+      "Bash(FORCE_COLOR=0 yes)",
+      "Bash(npx tsx *)",
+      "Bash(xargs cat)",
+      "Bash(curl -s -X POST http://localhost:3000/api/auth/login -H 'Content-Type: application/json' -d '{\"identifier\":\"ogrenci_3a\",\"password\":\"123456\"}')",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(pkill -f \"next-server\")",
+      "Bash(echo \"PID: $!\")",
+      "Bash(grep -v \"^$\")",
+      "Bash(npx ts-node *)",
+      "Bash(node -e ' *)",
+      "Bash(curl -s http://localhost:3000)"
+    ],
+    "additionalDirectories": [
+      "/Users/cancati/Desktop/Projects/matroskop/src/app/api/admin/okullar"
+    ]
+  }
+}

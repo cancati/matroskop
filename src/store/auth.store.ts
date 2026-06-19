@@ -37,15 +37,15 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "matroskop-auth",
-      storage: createJSONStorage(() =>
-        typeof window !== "undefined" && localStorage.getItem("matroskop-auth")
-          ? localStorage
-          : sessionStorage
-      ),
+      storage: createJSONStorage(() => {
+        if (typeof window === "undefined") return localStorage
+        return localStorage.getItem("matroskop-auth") ? localStorage : sessionStorage
+      }),
       partialize: (state) => ({
         user: state.user,
         rememberMe: state.rememberMe,
       }),
+      skipHydration: true,
     }
   )
 )

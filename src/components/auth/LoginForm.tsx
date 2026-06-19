@@ -10,11 +10,15 @@ import { loginSchema, type LoginInput } from "@/lib/validators"
 import { useAuth } from "@/hooks/useAuth"
 
 const TEST_ACCOUNTS = [
-  { label: "Sistem Yöneticisi", email: "admin@matroskop.com" },
-  { label: "Okul Yöneticisi",   email: "okul@matroskop.com" },
-  { label: "Öğretmen",          email: "ogretmen@matroskop.com" },
-  { label: "Öğrenci",           email: "ogrenci@matroskop.com" },
-  { label: "Tedarikçi",         email: "tedarikci@matroskop.com" },
+  { label: "Sistem Yöneticisi",        identifier: "sistem@matroskop.com" },
+  { label: "Okul Yön. (Mersin)",       identifier: "okul@matroskop.com" },
+  { label: "Okul Yön. (Ankara)",       identifier: "okul2@matroskop.com" },
+  { label: "Okul Yön. (İzmir)",        identifier: "okul3@matroskop.com" },
+  { label: "Öğretmen (3. sınıf)",      identifier: "ogretmen@matroskop.com" },
+  { label: "Öğretmen (4. sınıf)",      identifier: "ogretmen2@matroskop.com" },
+  { label: "Öğrenci",                  identifier: "berkaycetin_3a1" },
+  { label: "Tedarikçi (Mersin)",       identifier: "tedarikci@matroskop.com" },
+  { label: "Tedarikçi (Ankara)",       identifier: "tedarikci2@matroskop.com" },
 ]
 
 export function LoginForm() {
@@ -36,7 +40,7 @@ export function LoginForm() {
     setIsLoading(true)
     setError(null)
     try {
-      await signIn(data.email, data.password, data.rememberMe ?? false)
+      await signIn(data.identifier, data.password, data.rememberMe ?? false)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Bir hata oluştu.")
     } finally {
@@ -44,9 +48,9 @@ export function LoginForm() {
     }
   }
 
-  const fillTestAccount = (email: string) => {
-    setValue("email", email)
-    setValue("password", "123456")
+  const fillTestAccount = (identifier: string) => {
+    setValue("identifier", identifier, { shouldValidate: true, shouldDirty: true })
+    setValue("password", "Matroskop123!", { shouldValidate: true, shouldDirty: true })
   }
 
   return (
@@ -62,11 +66,11 @@ export function LoginForm() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-8 flex flex-col gap-4">
         <Input
-          label="E-posta"
-          type="email"
-          placeholder="ornek@mail.com"
-          error={errors.email?.message}
-          {...register("email")}
+          label="E-posta veya Kullanıcı Adı"
+          type="text"
+          placeholder="ornek@mail.com veya kullanici_3a"
+          error={errors.identifier?.message}
+          {...register("identifier")}
         />
 
         <div>
@@ -142,14 +146,14 @@ export function LoginForm() {
             Test Hesapları
           </p>
           <div className="grid grid-cols-1 gap-1.5">
-            {TEST_ACCOUNTS.map(({ label, email }) => (
+            {TEST_ACCOUNTS.map(({ label, identifier }) => (
               <button
-                key={email}
+                key={identifier}
                 type="button"
-                onClick={() => fillTestAccount(email)}
+                onClick={() => fillTestAccount(identifier)}
                 className="text-xs bg-white border border-form-border rounded-lg px-3 py-2 text-brand hover:bg-brand-light text-left transition-colors"
               >
-                {label} — {email}
+                {label} — {identifier}
               </button>
             ))}
           </div>

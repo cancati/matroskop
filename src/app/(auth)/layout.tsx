@@ -1,4 +1,4 @@
-import { Shield, BarChart2, Users } from "lucide-react"
+import { Shield, BarChart2, Users, ArrowLeft } from "lucide-react"
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -42,7 +42,14 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       </div>
 
       {/* Sağ panel — form */}
-      <div className="w-full md:w-1/2 bg-surface min-h-screen flex items-center justify-center p-8">
+      <div className="w-full md:w-1/2 bg-surface min-h-screen flex items-center justify-center p-8 relative">
+        <a
+          href="/anasayfa"
+          className="absolute top-6 left-6 flex items-center gap-1.5 text-sm text-muted hover:text-brand transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Ana Sayfa
+        </a>
         <div className="max-w-md w-full">
           {children}
         </div>

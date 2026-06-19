@@ -39,9 +39,9 @@ function Navbar() {
           ))}
         </div>
 
-        <button className="hidden md:block border-2 border-brand text-brand rounded-full px-6 py-2 text-[14px] font-semibold hover:bg-brand hover:text-white transition-all">
+        <a href="/giris" className="hidden md:block border-2 border-brand text-brand rounded-full px-6 py-2 text-[14px] font-semibold hover:bg-brand hover:text-white transition-all">
           Giriş Yap
-        </button>
+        </a>
 
         <button onClick={() => setOpen(!open)} className="md:hidden">
           {open ? <X className="w-6 h-6 text-brand" /> : <Menu className="w-6 h-6 text-brand" />}
@@ -56,9 +56,9 @@ function Navbar() {
                 {label}
               </a>
             ))}
-            <button className="border-2 border-brand text-brand rounded-full py-2 text-sm font-semibold mt-2">
+            <a href="/giris" className="border-2 border-brand text-brand rounded-full py-2 text-sm font-semibold mt-2 text-center">
               Giriş Yap
-            </button>
+            </a>
           </div>
         </div>
       )}

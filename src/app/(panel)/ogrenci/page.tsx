@@ -2,23 +2,21 @@
 
 import { BookOpen } from "lucide-react"
 import { useAuthStore } from "@/store/auth.store"
-import { useAuth } from "@/hooks/useAuth"
-import { Button } from "@/components/ui/Button"
 
-export default function OgrenciDashboard() {
+export default function OgrenciPage() {
   const { user } = useAuthStore()
-  const { signOut } = useAuth()
-
   return (
-    <div className="min-h-screen bg-surface p-8">
-      <div className="max-w-lg mx-auto bg-white rounded-2xl p-10 shadow-sm text-center mt-20">
-        <div className="w-16 h-16 bg-brand-light rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <BookOpen className="w-7 h-7 text-brand" />
+    <div className="flex flex-col gap-6">
+      <div>
+        <h1 className="text-2xl font-bold text-brand">Hos Geldiniz, {user?.name}</h1>
+        <p className="text-muted text-[15px] mt-1">Panel gelistirme asamasindadir.</p>
+      </div>
+      <div className="bg-white rounded-2xl border border-form-border p-8 flex flex-col items-center justify-center min-h-[300px] gap-4">
+        <div className="bg-brand-light rounded-2xl p-4">
+          <BookOpen className="w-8 h-8 text-brand" />
         </div>
-        <h1 className="text-2xl font-bold text-brand">Öğrenci Paneli</h1>
-        <p className="text-muted mt-2">Hoş geldiniz, {user?.name}</p>
-        <p className="text-xs text-muted/60 mt-1">Bu panel geliştirme aşamasındadır.</p>
-        <Button intent="outline" className="mt-6" onClick={signOut}>Çıkış Yap</Button>
+        <p className="text-[15px] font-semibold text-brand">Ogrenci Paneli</p>
+        <p className="text-muted text-[14px] text-center max-w-sm">Bu sayfa yakinda eklenecek.</p>
       </div>
     </div>
   )
