@@ -2,10 +2,15 @@
 
 ## ⚠️ Her Oturumda İlk Adım
 
-**Her geliştirme oturumuna başlamadan önce `STATUS.md` dosyasını oku.**
-- Ne yapıldığını anlamak için kodu tarama; `STATUS.md`'ye bak.
-- Biten bir madde tamamlanınca `- [ ]` → `- [x]` yap.
-- Yeni görev çıkarsa önce `STATUS.md`'ye ekle, sonra yap.
+**Her geliştirme oturumuna başlamadan önce şu iki dosyayı oku:**
+
+- **`STATUS.md`** — Ne yapıldı, ne yapılacak. Kodu tarama, buraya bak.
+- **`ARCHITECTURE.md`** — Sayfa haritası, API listesi, veri modelleri, akışlar.
+
+Kurallar:
+- Biten madde → `STATUS.md`'de `- [ ]` → `- [x]` yap.
+- Yeni sayfa/API eklendiyse → `ARCHITECTURE.md`'yi güncelle.
+- Yeni görev çıkarsa → önce `STATUS.md`'ye ekle, sonra yap.
 
 ---
 
