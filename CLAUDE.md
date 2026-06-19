@@ -1,9 +1,23 @@
-# Matroskop — Kurumsal Website
+# Matroskop — Claude Geliştirme Kuralları
 
-Şu an sadece kurumsal site geliştiriliyor. Panel, auth, sınav motoru sonraki fazlar.
+## ⚠️ Her Oturumda İlk Adım
 
-## Stack
-Next.js 14 · TypeScript · Tailwind CSS · Plus Jakarta Sans
+**Her geliştirme oturumuna başlamadan önce `STATUS.md` dosyasını oku.**
+- Ne yapıldığını anlamak için kodu tarama; `STATUS.md`'ye bak.
+- Biten bir madde tamamlanınca `- [ ]` → `- [x]` yap.
+- Yeni görev çıkarsa önce `STATUS.md`'ye ekle, sonra yap.
+
+---
+
+## Proje Özeti
+
+**Matroskop** — okul tabanlı matematik yetkinlik ölçüm platformu.
+
+**Stack:** Next.js 14 App Router · TypeScript · Tailwind CSS · Prisma · PostgreSQL
+
+**Branch stratejisi:**
+- `main` → canlı (Vercel production) — doğrudan commit atma
+- `dev` → aktif geliştirme — tüm çalışma burада
 
 ---
 
@@ -12,71 +26,56 @@ Next.js 14 · TypeScript · Tailwind CSS · Plus Jakarta Sans
 ```
 src/
 ├── app/
-│   ├── layout.tsx              # Root layout (font, metadata)
-│   ├── page.tsx                # → /anasayfa yönlendir
-│   ├── anasayfa/page.tsx       # Tüm section'ları birleştirir
-│   ├── kvkk/page.tsx
-│   └── cerez-politikasi/page.tsx
+│   ├── (auth)/             # Giriş sayfası
+│   ├── (panel)/            # Role-based panel sayfaları
+│   │   ├── sistem-yoneticisi/
+│   │   ├── okul-yoneticisi/
+│   │   ├── ogretmen/
+│   │   ├── ogrenci/
+│   │   └── tedarikci/
+│   ├── api/                # API route'ları (auth, admin, sinav, roller)
+│   └── anasayfa/           # Kurumsal landing page
 │
 ├── components/
-│   ├── layout/
-│   │   ├── Navbar.tsx
-│   │   └── Footer.tsx
-│   ├── sections/               # Her section ayrı bileşen
-│   │   ├── Hero.tsx
-│   │   ├── Product.tsx
-│   │   ├── HowItWorks.tsx
-│   │   ├── About.tsx
-│   │   ├── Testimonials.tsx
-│   │   ├── Dealers.tsx
-│   │   ├── Contact.tsx
-│   │   └── FAQ.tsx
-│   └── ui/                     # Tekrar kullanılan küçük parçalar
-│       ├── Button.tsx
-│       ├── SectionTitle.tsx
-│       ├── Badge.tsx
-│       └── TestimonialCard.tsx
+│   ├── auth/               # LoginForm
+│   ├── panel/              # Sidebar, Topbar, MobilMenu, nav-items
+│   ├── sistem-yoneticisi/  # Modal bileşenleri
+│   └── ui/                 # Button, Input, Spinner
 │
-├── styles/
-│   └── variants.ts             # cva() ile buton, badge varyantları
+├── lib/
+│   ├── prisma.ts           # Prisma client
+│   ├── auth.ts             # JWT işlemleri
+│   ├── admin-auth.ts       # requireAuth() / requireAdmin()
+│   └── validators.ts       # Zod şemaları
 │
 ├── types/
-│   └── site.ts                 # Site'e özel tipler
+│   ├── user.ts             # Kullanıcı tipleri
+│   └── admin.ts            # Admin panel tipleri
 │
-└── data/
-    └── site.ts                 # Tüm içerikler (metin, link, iletişim)
+└── store/
+    └── auth.store.ts       # Zustand auth store
 ```
 
 ---
 
 ## Kurallar
 
-**page.tsx sadece birleştirir** — veri çekme, state, JSX yok.
-```tsx
-// ✅
-export default function AnasayfaPage() {
-  return <><Hero /><Product /><HowItWorks />...</>;
-}
-```
+**Tip tanımları yalnızca `src/types/` altında** — bileşen içinde inline tip yazma.
 
-**Stil varyantları styles/variants.ts'de** — bileşen içine class string gömme.
+**API guard'ları her route'da zorunlu:**
 ```ts
-// styles/variants.ts
-export const buttonVariants = cva("...", {
-  variants: { intent: { primary: "...", outline: "..." } }
-});
+const auth = requireAuth()
+if (!auth || auth.role !== "TEACHER") return 401
 ```
 
-**İçerikler data/site.ts'de** — bileşen içine Türkçe metin yazma.
-```tsx
-// ✅
-import { testimonials } from "@/data/site";
+**Supabase/Prisma sorguları `src/lib/` altında** — bileşen içinde direkt `prisma.from(...)` yok.
 
-// ❌
-const items = [{ name: "Murat Y.", quote: "..." }]; // bileşen içinde
-```
+**Stil:** Tailwind utility class, renk token kullan (`text-brand`, `bg-surface-section`).
+Inline `style={{}}` sadece dinamik değerler için.
 
-**Renk token kullan** — `text-brand`, `bg-surface-section` gibi. `text-[#033147]` yazma.
+**Bileşen 150 satırı geçmeye başlarsa** alt bileşenlere böl.
+
+**console.log** production'a gitmesin.
 
 ---
 
@@ -88,8 +87,6 @@ const items = [{ name: "Murat Y.", quote: "..." }]; // bileşen içinde
 | `brand-dark`      | #06476B  |
 | `brand-light`     | #e8eef6  |
 | `accent-yellow`   | #e1b12c  |
-| `accent-blue`     | #82c9ff  |
-| `accent-green`    | #a8e6cf  |
 | `surface`         | #f8f8f8  |
 | `surface-section` | #f0f2f6  |
 | `cta`             | #382673  |
@@ -97,28 +94,14 @@ const items = [{ name: "Murat Y.", quote: "..." }]; // bileşen içinde
 
 ---
 
-## Sayfalar & Section'lar
-
-| Section       | Anchor       | İçerik                                      |
-|---------------|--------------|---------------------------------------------|
-| Hero          | #giris       | Badge'ler, başlık, slogan, CTA butonu       |
-| Product       | #matroskop   | Kapsam listesi, ne sağlar listesi           |
-| HowItWorks    | #nasil       | 4 adımlı süreç                              |
-| About         | #hakkimizda  | 3 yaklaşım kartı, ekip metni                |
-| Testimonials  | —            | 4 referans kartı                            |
-| Dealers       | #bayiler     | Bayi ağı bilgisi, başvuru CTA               |
-| Contact       | #iletisim    | İletişim bilgileri + form                   |
-| FAQ           | —            | 4 soru-cevap                                |
-
-Nav: Anasayfa · Matroskop · Hakkımızda · Bayiler · İletişim + **Giriş Yap** (CTA)
-
----
-
-## İletişim & Logo
+## Commit Formatı
 
 ```
-Tel:   +90 (324) 000 00 00
-Email: info@matroskop.com
-Adres: Aydınlıkevler Mah. Yenişehir/MERSİN
-Logo:  https://matroskop.com/wp-content/uploads/2025/10/matroskoplogo2.png
+feat: öğretmen sınıf oluşturma eklendi
+fix: sınav devam mantığı düzeltildi
+refactor: ScoreBar bileşeni ayrıldı
+style: mobil görünüm düzenlendi
+chore: kullanılmayan importlar temizlendi
 ```
+
+Commit mesajı branch'e push edildiğinde `dev`'e gider; `main`'e merge onay gerektirir.
