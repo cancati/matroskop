@@ -79,34 +79,80 @@
 - [x] Öğrenciye sınav oluşturma (PENDING olarak)
 - [x] Raporlar (accordion, ScoreBar)
 
+### 📄 PDF Rapor Sistemi
+- [x] `SectionText` modeli (schema) — 1808 dinamik metin kaydı
+- [x] `ExamResult` modeli genişletildi — `categoryScores` + `profileSlugs` JSON alanları eklendi
+- [x] `lib/scoring.ts` — 50 havuz ağırlık matrisi, `calculateExamResult()`, `scoreToThreshold()`, `scoreToLevel()`
+- [x] `lib/section-texts.ts` — `fetchSectionTexts()` (score-based + slug-based tek sorguda)
+- [x] `scripts/import-bolum-metinleri.ts` — Excel → DB import (idempotent, upsert)
+- [x] `components/pdf/StudentReportPDF.tsx` — @react-pdf/renderer ile 3 sayfalık PDF şablonu
+- [x] `GET /api/rapor/[examId]` — PDF stream endpoint (yetki kontrolü dahil)
+- [x] `POST /api/exam/[examId]/complete` — Sınav tamamlama + skor hesaplama + ExamResult kaydetme
+
 ---
 
 ## 🔲 Yapılacaklar
 
-### Yüksek Öncelik
-- [ ] **Öğretmen — Sınıf oluşturma** (`POST /api/teacher/sinifim` + UI butonu)
-- [ ] **Okul Yöneticisi — Öğretmen ekleme** (ogretmenler sayfasına form/modal ekle)
-- [ ] **Öğrenci — PDF rapor indirme** (sınav bitince veya raporlarım sayfasından)
+### Yüksek Öncelik — Öğretmen
+- [ ] Sınıf oluşturma (`POST /api/teacher/sinifim` + UI butonu)
+- [ ] Sınıf düzenleme / silme
+
+### Yüksek Öncelik — Okul Yöneticisi
+- [ ] Öğretmen ekleme (ogretmenler sayfasına form/modal)
+- [ ] Sınıf CRUD (ekle / düzenle / sil — şu an sadece listeleme var)
+- [ ] Transfer sayfasında okul seçme dropdown'ı (şu an ID elle giriliyor)
+
+### Yüksek Öncelik — Sistem Yöneticisi
+- [ ] Kullanıcı aramasına username desteği (şu an sadece name + email aranıyor)
+- [ ] Tedarikçiye öğrenci atama UI'ı
+- [ ] PDF bölüm metinleri yönetimi (SectionText CRUD — liste, filtre, düzenleme)
+
+### Yüksek Öncelik — Öğrenci
+- [ ] PDF rapor indirme butonu (raporlarım sayfasından)
 
 ### Orta Öncelik
-- [ ] **Sistem Yöneticisi — PDF dinamik metin yönetimi** (raporda gösterilecek bölüm metinleri)
-- [ ] Öğrenci şifre değiştirme
+- [ ] Öğrenci şifre değiştirme (profil sayfası)
 - [ ] Okul Yöneticisi dashboard istatistikleri (şu an stub)
 - [ ] Tedarikçi dashboard istatistikleri (şu an stub)
+- [ ] `scripts/import-bolum-metinleri.ts` çalıştırılacak (1808 kayıt DB'ye yüklenecek)
 
 ### Düşük Öncelik / Sonraki Faz
-- [ ] Şifremi unuttum akışı (sıfırlama maili)
+- [ ] Şifremi unuttum akışı (e-posta ile sıfırlama)
 - [ ] Toplu öğrenci import (CSV)
 - [ ] Sınav süresi limiti (opsiyonel timer)
 - [ ] Mobil sınav görünümü iyileştirmesi
+- [ ] Bildirim sistemi
 
 ---
 
 ## Teknik Notlar
 
-- Soru havuzu: G57 poolId 1–20, G58 poolId 21–35, G59 poolId 36–50
-- Sınav oluşturma: her havuzdan 1 soru seçilir → 50 soru
+### Sınav & Skor
+- Sınav: 50 havuzdan her birinden 1 rastgele soru → toplam 50 soru
 - `selected: -1` → cevaplanmamış soru sentinel değeri
 - Tedarikçi oluşturduğu sınavlar `PENDING` statüsüyle başlar
-- Seed çalıştırma: `npx prisma db seed`
-- Branch: `dev` → geliştirme, `main` → canlı (Vercel production)
+
+### Havuz Yapısı (matroskop algoritma.xlsx)
+- Havuz 1–25: G57 / G58 / G59 alt boyutlarına karma ağırlık + slug sinyalleri
+- Havuz 26–32: Hata kaynakları (kavramsal, işlem, dikkat, strateji, temsil, mantıksal, transfer)
+- Havuz 33–39: Üst biliş becerileri (planlama, kendini düzenleme, bilişsel farkındalık vb.)
+- Havuz 40–43: Öğrenme modeli (şu an boş)
+- Havuz 44–47: Öne çıkan beceriler (sayısal akıl yürütme, problem çözme, analitik vb.)
+- Havuz 48–50: Duyuşsal faktörler (şu an boş)
+
+### Skor Formülleri
+- G57 = Akademik Matematik (havuz 1–25 ağırlıklı ortalama, 5 alt boyut)
+- G58 = İleri Matematik (havuz 1–25, 4 alt boyut)
+- G59 = Matematik Okuryazarlığı (havuz 1–25, 4 alt boyut)
+- G76 = G57 × 0.4 + G58 × 0.3 + G59 × 0.3
+- Seviyeler: A1 (<30) · A2 (<45) · B1 (<60) · B2 (<75) · C1 (<90) · C2 (≤100)
+
+### Slug Seçimi
+- Hata tipi → yanlış cevaplardan birikmeli, argmax
+- Üst biliş → yanlış cevaplardan birikmeli, argmax
+- Öne çıkan beceri → doğru cevaplardan birikmeli, argmax
+
+### Genel
+- Seed: `npx prisma db seed`
+- Branch: `dev` → geliştirme · `main` → canlı (Vercel production)
+- Bölüm metinleri import: `npx ts-node --project tsconfig.json scripts/import-bolum-metinleri.ts`
