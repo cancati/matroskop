@@ -87,8 +87,8 @@ Transfer
   └── studentId → Student
 
 Question
-  id, content, options (String[]), correctAnswer (int)
-  poolId (1-50), grade (1-8), category (G57|G58|G59), isActive
+  id, content, options (String[]), correctAnswer (int, 0-indexed)
+  poolNumber (1-50), poolType (T1=tek doğru), grade (1-8, nullable), category (G57|G58|G59), isActive
 
 Exam
   id, grade, status (PENDING|IN_PROGRESS|COMPLETED)

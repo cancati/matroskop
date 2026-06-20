@@ -22,7 +22,7 @@ export async function PUT(
   const admin = requireAdmin()
   if (!admin) return NextResponse.json({ message: "Yetkisiz." }, { status: 401 })
 
-  const { content, options, correctAnswer, poolId, grade, category, isActive } = await req.json()
+  const { content, options, correctAnswer, poolNumber, grade, category, isActive } = await req.json()
 
   if (content !== undefined && content.trim().length < 5)
     return NextResponse.json({ message: "Soru metni en az 5 karakter olmalidir." }, { status: 400 })
@@ -37,7 +37,7 @@ export async function PUT(
       ...(content       !== undefined && { content: content.trim() }),
       ...(options       !== undefined && { options: options.map((o: string) => o.trim()) }),
       ...(correctAnswer !== undefined && { correctAnswer }),
-      ...(poolId        !== undefined && { poolId }),
+      ...(poolNumber        !== undefined && { poolNumber }),
       ...(grade         !== undefined && { grade }),
       ...(category      !== undefined && { category }),
       ...(isActive      !== undefined && { isActive }),

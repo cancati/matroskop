@@ -41,6 +41,8 @@ export default function SoruBankasiPage() {
   const openAdd = () => { setEditingQuestion(null); setShowModal(true) }
   const openEdit = (q: QuestionData) => { setEditingQuestion(q); setShowModal(true) }
 
+  const stripHtml = (html: string) => html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim()
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
@@ -108,13 +110,13 @@ export default function SoruBankasiPage() {
                 <tr key={q.id} className="border-t border-form-border hover:bg-surface/50 transition-colors">
                   <td className="px-6 py-4 text-muted text-[13px]">{(page - 1) * limit + idx + 1}</td>
                   <td className="px-6 py-4 text-brand text-[14px] max-w-[320px]">
-                    <span className="line-clamp-2">{q.content}</span>
+                    <span className="line-clamp-2">{stripHtml(q.content)}</span>
                   </td>
                   <td className="px-6 py-4">
                     <span className="bg-brand-light text-brand rounded-full px-2.5 py-0.5 text-[12px] font-medium">{q.category}</span>
                   </td>
-                  <td className="px-6 py-4 text-muted text-[13px] font-mono">{q.poolId}</td>
-                  <td className="px-6 py-4 text-muted text-[14px]">{q.grade}. Sinif</td>
+                  <td className="px-6 py-4 text-muted text-[13px] font-mono">{q.poolNumber}</td>
+                  <td className="px-6 py-4 text-muted text-[14px]">{q.grade ? `${q.grade}. Sinif` : "—"}</td>
                   <td className="px-6 py-4">
                     {q.isActive
                       ? <span className="bg-green-100 text-green-700 rounded-full px-2.5 py-0.5 text-[12px] font-medium">Aktif</span>

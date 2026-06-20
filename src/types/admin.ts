@@ -75,8 +75,9 @@ export interface QuestionData {
   content:       string
   options:       string[]
   correctAnswer: number
-  poolId:        number
-  grade:         number
+  poolNumber:    number
+  poolType:      string
+  grade:         number | null
   category:      string
   isActive:      boolean
   createdAt:     string

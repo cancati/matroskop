@@ -70,11 +70,11 @@ function makeUsername(first: string, last: string, suffix: string): string {
 }
 
 // ─── SORU VERİSİ ──────────────────────────────────────────────────────────────
-// [poolId, category, content, options[], correctAnswer]
+// [poolNumber, category, content, options[], correctAnswer]
 type QDef = [number, string, string, string[], number]
 
 const GRADE3_QUESTIONS: QDef[] = [
-  // ── G57 (poolId 1-20) ─────────────────────────────────────────────────────
+  // ── G57 (poolNumber 1-20) ─────────────────────────────────────────────────────
   [1,  "G57", "345 + 234 kactir?",                                                  ["569","579","589","599"], 1],
   [2,  "G57", "876 - 432 kactir?",                                                  ["424","434","444","454"], 1],
   [3,  "G57", "6 x 7 kactir?",                                                      ["36","42","48","54"],     1],
@@ -96,7 +96,7 @@ const GRADE3_QUESTIONS: QDef[] = [
   [19, "G57", "48 / 6 kactir?",                                                     ["6","7","8","9"],         2],
   [20, "G57", "Ali'nin 5 paketi var. Her pakette 12 biskuvi var. Toplamda kac biskuvi vardir?", ["50","55","60","65"], 2],
 
-  // ── G58 (poolId 21-35) ────────────────────────────────────────────────────
+  // ── G58 (poolNumber 21-35) ────────────────────────────────────────────────────
   [21, "G58", "Bir dikdortgenin uzun kenari 8 cm, kisa kenari 5 cm'dir. Cevresi kac cm'dir?",  ["24","26","28","30"],                                    1],
   [22, "G58", "Saat 09:30'da baslayan ders 45 dakika suruyor. Ders kacta biter?",               ["10:00","10:05","10:10","10:15"],                         3],
   [23, "G58", "Bir oruntude: 2, 4, 8, 16, ... Sonraki sayi kactir?",                           ["18","24","32","36"],                                    2],
@@ -113,7 +113,7 @@ const GRADE3_QUESTIONS: QDef[] = [
   [34, "G58", "Bir ucgenin acilari 60 ve 80 derecedir. Ucuncu aci kac derecedir?",              ["30","40","50","60"],                                    1],
   [35, "G58", "1 kg 250 g = kac gram?",                                                        ["1025","1150","1250","1350"],                            2],
 
-  // ── G59 (poolId 36-50) ────────────────────────────────────────────────────
+  // ── G59 (poolNumber 36-50) ────────────────────────────────────────────────────
   [36, "G59", "Markette 3 elma 6 TL, 5 armut 15 TL ise hangi meyve daha pahalidir?",                    ["Elma","Armut","Esit","Hesaplanamaz"],   1],
   [37, "G59", "Bir trenin 4 vagonu var. Her vagonda 36 koltuk. Toplam 20 bos koltuk varsa dolu koltuk?", ["114","124","134","144"],                1],
   [38, "G59", "Bir haritada 1 cm = 10 km'yi temsil ediyor. 45 km'lik yol haritada kac cm'dir?",          ["3,5","4","4,5","5"],                   2],
@@ -132,7 +132,7 @@ const GRADE3_QUESTIONS: QDef[] = [
 ]
 
 const GRADE4_QUESTIONS: QDef[] = [
-  // ── G57 (poolId 1-20) ─────────────────────────────────────────────────────
+  // ── G57 (poolNumber 1-20) ─────────────────────────────────────────────────────
   [1,  "G57", "1234 + 5678 kactir?",                                                      ["6892","6902","6912","6922"], 2],
   [2,  "G57", "8743 - 2568 kactir?",                                                      ["6155","6165","6175","6185"], 2],
   [3,  "G57", "23 x 34 kactir?",                                                          ["762","772","782","792"],     2],
@@ -154,7 +154,7 @@ const GRADE4_QUESTIONS: QDef[] = [
   [19, "G57", "630 / 21 kactir?",                                                         ["24","27","30","33"],         2],
   [20, "G57", "Zeynep her gun 24 soru cozuyor. 15 gunde kac soru cozer?",                 ["340","350","360","370"],     2],
 
-  // ── G58 (poolId 21-35) ────────────────────────────────────────────────────
+  // ── G58 (poolNumber 21-35) ────────────────────────────────────────────────────
   [21, "G58", "Bir dikdortgenin uzun kenari 15 cm, kisa kenari 8 cm. Alani kac cm2?",         ["100","110","120","130"],                                     2],
   [22, "G58", "Saat 14:30'da baslayan toplanti 1 saat 45 dakika surer. Kacta biter?",         ["15:45","16:00","16:15","16:30"],                             2],
   [23, "G58", "5 hafta kac gundur?",                                                          ["25","30","35","40"],                                        2],
@@ -171,7 +171,7 @@ const GRADE4_QUESTIONS: QDef[] = [
   [34, "G58", "4 kg 250 g = kac gram?",                                                      ["4025","4125","4250","4525"],                                2],
   [35, "G58", "2500 ml = kac litre kac mililitre?",                                           ["2 L 500 ml","2 L 250 ml","25 L","250 L"],                   0],
 
-  // ── G59 (poolId 36-50) ────────────────────────────────────────────────────
+  // ── G59 (poolNumber 36-50) ────────────────────────────────────────────────────
   [36, "G59", "4 paket biskuvi 32 TL, 6 paket cips 48 TL. Hangi urun daha pahalıdır?",           ["Biskuvi","Cips","Esit","Hesaplanamaz"],   2],
   [37, "G59", "6 vagonlu tren, vagonda 48 koltuk. Yolcular %75 dolu ise bos koltuk sayisi?",      ["60","68","72","80"],                     2],
   [38, "G59", "Haritada 2 cm = 50 km. 175 km'lik yol haritada kac cm'dir?",                       ["5","6","7","8"],                        2],
@@ -192,7 +192,7 @@ const GRADE4_QUESTIONS: QDef[] = [
 // ─── SINAV OLUSTURMA ──────────────────────────────────────────────────────────
 
 type QInfo = { id: string; correctAnswer: number; optCount: number }
-type QMap  = Map<number, Map<number, QInfo>> // grade → poolId → QInfo
+type QMap  = Map<number, Map<number, QInfo>> // grade → poolNumber → QInfo
 
 async function createExamForStudent(
   studentId: string,
@@ -220,8 +220,8 @@ async function createExamForStudent(
     }
   } else if (status === "IN_PROGRESS") {
     const answeredUpTo = ri(8, 30)
-    for (const [poolId, q] of gq) {
-      if (poolId <= answeredUpTo) {
+    for (const [poolNumber, q] of gq) {
+      if (poolNumber <= answeredUpTo) {
         const isCorrect = Math.random() < 0.55
         answers.push({
           examId: exam.id,
@@ -249,15 +249,15 @@ async function createExamForStudent(
     let g58rem = g58c, g58tot = 0
     let g59rem = g59c, g59tot = 0
 
-    for (const [poolId, q] of gq) {
+    for (const [poolNumber, q] of gq) {
       let isCorrect: boolean
 
-      if (poolId <= 20) {
+      if (poolNumber <= 20) {
         g57tot++
         const left = 20 - g57tot
         isCorrect = (g57rem > left) || (g57rem > 0 && Math.random() < g57rem / (left + 1))
         if (isCorrect && g57rem > 0) g57rem--
-      } else if (poolId <= 35) {
+      } else if (poolNumber <= 35) {
         g58tot++
         const left = 15 - g58tot
         isCorrect = (g58rem > left) || (g58rem > 0 && Math.random() < g58rem / (left + 1))
@@ -336,20 +336,21 @@ async function main() {
   const hash = await bcrypt.hash("Matroskop123!", 12)
 
   // ── SORULAR ───────────────────────────────────────────────────────────────
-  for (const [poolId, category, content, options, correctAnswer] of GRADE3_QUESTIONS) {
-    await prisma.question.create({ data: { poolId, category, content, options, correctAnswer, grade: 3, isActive: true } })
+  for (const [poolNumber, category, content, options, correctAnswer] of GRADE3_QUESTIONS) {
+    await prisma.question.create({ data: { poolNumber, category, content, options, correctAnswer, grade: 3, isActive: true } })
   }
-  for (const [poolId, category, content, options, correctAnswer] of GRADE4_QUESTIONS) {
-    await prisma.question.create({ data: { poolId, category, content, options, correctAnswer, grade: 4, isActive: true } })
+  for (const [poolNumber, category, content, options, correctAnswer] of GRADE4_QUESTIONS) {
+    await prisma.question.create({ data: { poolNumber, category, content, options, correctAnswer, grade: 4, isActive: true } })
   }
   console.log("  ✓ 100 soru olusturuldu (3. sinif + 4. sinif, pool 1-50)")
 
-  // Soru haritasi olustur: grade → poolId → { id, correctAnswer, optCount }
-  const allQs = await prisma.question.findMany({ select: { id: true, grade: true, poolId: true, correctAnswer: true, options: true } })
+  // Soru haritasi olustur: grade → poolNumber → { id, correctAnswer, optCount }
+  const allQs = await prisma.question.findMany({ select: { id: true, grade: true, poolNumber: true, correctAnswer: true, options: true } })
   const qMap: QMap = new Map()
   for (const q of allQs) {
+    if (q.grade === null) continue
     if (!qMap.has(q.grade)) qMap.set(q.grade, new Map())
-    qMap.get(q.grade)!.set(q.poolId, { id: q.id, correctAnswer: q.correctAnswer, optCount: q.options.length })
+    qMap.get(q.grade)!.set(q.poolNumber, { id: q.id, correctAnswer: q.correctAnswer, optCount: q.options.length })
   }
 
   // ── SİSTEM YÖNETİCİSİ ────────────────────────────────────────────────────

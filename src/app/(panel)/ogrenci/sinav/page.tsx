@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 interface ExamQuestion {
   id: string
   questionId: string
-  poolId: number
+  poolNumber: number
   content: string
   options: string[]
   selected: number
@@ -30,15 +30,23 @@ const OPTION_LETTERS = ["A", "B", "C", "D", "E", "F"]
 
 type ExamStatus = "checking" | "new" | "resume"
 
+interface ExamInfo {
+  totalPools: number
+  g57: number
+  g58: number
+  g59: number
+}
+
 interface StartScreenProps {
   status: ExamStatus
   answeredCount: number
   totalCount: number
+  examInfo: ExamInfo
   onStart: () => void
   loading: boolean
 }
 
-function StartScreen({ status, answeredCount, totalCount, onStart, loading }: StartScreenProps) {
+function StartScreen({ status, answeredCount, totalCount, examInfo, onStart, loading }: StartScreenProps) {
   if (status === "checking")
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -79,7 +87,7 @@ function StartScreen({ status, answeredCount, totalCount, onStart, loading }: St
             <p className="text-muted text-[14px] mb-6">Sinavi baslatmadan once bilgileri inceleyin.</p>
             <div className="grid grid-cols-3 gap-3 mb-6">
               {[
-                { value: "50", label: "Soru" },
+                { value: String(examInfo.totalPools), label: "Soru" },
                 { value: "3", label: "Kategori" },
                 { value: "~40dk", label: "Tahmini Sure" },
               ].map(({ value, label }) => (
@@ -91,9 +99,9 @@ function StartScreen({ status, answeredCount, totalCount, onStart, loading }: St
             </div>
             <div className="flex flex-col gap-2 mb-6">
               {[
-                { name: "Akademik Matematik", soru: 20, yuzde: 40 },
-                { name: "Ileri Beceriler",    soru: 15, yuzde: 30 },
-                { name: "Okuryazarlık",       soru: 15, yuzde: 30 },
+                { name: "Akademik Matematik", soru: examInfo.g57, yuzde: 40 },
+                { name: "Ileri Beceriler",    soru: examInfo.g58, yuzde: 30 },
+                { name: "Okuryazarlık",       soru: examInfo.g59, yuzde: 30 },
               ].map(({ name, soru, yuzde }) => (
                 <div key={name} className="flex items-center justify-between bg-surface-section rounded-xl px-4 py-2.5">
                   <span className="text-[13px] font-medium text-brand">{name}</span>
@@ -182,6 +190,7 @@ export default function SinavPage() {
   const [examStatus, setExamStatus] = useState<ExamStatus>("checking")
   const [statusAnswered, setStatusAnswered] = useState(0)
   const [statusTotal, setStatusTotal] = useState(50)
+  const [examInfo, setExamInfo] = useState<ExamInfo>({ totalPools: 50, g57: 20, g58: 15, g59: 15 })
   const [exam, setExam] = useState<ExamData | null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, number>>({})
@@ -194,6 +203,9 @@ export default function SinavPage() {
     fetch("/api/sinav/durum")
       .then((r) => r.json())
       .then((data) => {
+        if (data.totalPools) {
+          setExamInfo({ totalPools: data.totalPools, g57: data.g57, g58: data.g58, g59: data.g59 })
+        }
         if (data.hasActive && (data.answeredCount ?? 0) > 0) {
           setStatusAnswered(data.answeredCount ?? 0)
           setStatusTotal(data.totalCount ?? 50)
@@ -274,6 +286,7 @@ export default function SinavPage() {
           status={examStatus}
           answeredCount={statusAnswered}
           totalCount={statusTotal}
+          examInfo={examInfo}
           onStart={handleStart}
           loading={false}
         />
@@ -297,6 +310,14 @@ export default function SinavPage() {
     )
 
   const { questions } = exam
+
+  if (questions.length === 0)
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-2xl p-8 text-center">
+        <p className="text-red-700 text-[15px]">Bu sınıf için aktif soru bulunamadı.</p>
+      </div>
+    )
+
   const current = questions[currentIndex]
   const answeredCount = Object.values(answers).filter((v) => v !== -1).length
   const unansweredCount = questions.length - answeredCount
@@ -353,9 +374,10 @@ export default function SinavPage() {
                 >
                   {OPTION_LETTERS[idx]}
                 </span>
-                <span className={`text-[15px] ${isSelected ? "text-brand font-medium" : "text-brand"}`}>
-                  {option}
-                </span>
+                <span
+                  className={`text-[15px] [&_p]:m-0 [&_img]:max-h-14 [&_img]:object-contain ${isSelected ? "text-brand font-medium" : "text-brand"}`}
+                  dangerouslySetInnerHTML={{ __html: option }}
+                />
               </button>
             )
           })}

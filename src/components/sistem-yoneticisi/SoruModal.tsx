@@ -16,8 +16,8 @@ const schema = z.object({
   option1:       z.string().min(1, "Sik bos olamaz"),
   option2:       z.string().min(1, "Sik bos olamaz"),
   option3:       z.string().min(1, "Sik bos olamaz"),
-  correctAnswer: z.number().min(0).max(3),
-  poolId:        z.number().min(1).max(50),
+  correctAnswer: z.number().min(0).max(5),
+  poolNumber:    z.number().min(1).max(50),
   grade:         z.number().min(1).max(8),
   category:      z.enum(CATEGORIES),
 })
@@ -37,7 +37,7 @@ export function SoruModal({ isOpen, onClose, soru, onSuccess }: SoruModalProps) 
 
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { correctAnswer: 0, grade: 3, category: "G57", poolId: 1 },
+    defaultValues: { correctAnswer: 0, grade: 3, category: "G57", poolNumber: 1 },
   })
 
   const correctVal = watch("correctAnswer")
@@ -51,7 +51,7 @@ export function SoruModal({ isOpen, onClose, soru, onSuccess }: SoruModalProps) 
         option2:       soru?.options[2] ?? "",
         option3:       soru?.options[3] ?? "",
         correctAnswer: soru?.correctAnswer ?? 0,
-        poolId:        soru?.poolId ?? 1,
+        poolNumber:    soru?.poolNumber ?? 1,
         grade:         soru?.grade ?? 3,
         category:      (soru?.category as typeof CATEGORIES[number]) ?? "G57",
       })
@@ -66,7 +66,7 @@ export function SoruModal({ isOpen, onClose, soru, onSuccess }: SoruModalProps) 
       content:       data.content,
       options:       [data.option0, data.option1, data.option2, data.option3],
       correctAnswer: data.correctAnswer,
-      poolId:        data.poolId,
+      poolNumber:    data.poolNumber,
       grade:         data.grade,
       category:      data.category,
     }
@@ -145,15 +145,15 @@ export function SoruModal({ isOpen, onClose, soru, onSuccess }: SoruModalProps) 
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-brand mb-1.5">Havuz ID *</label>
+              <label className="block text-sm font-medium text-brand mb-1.5">Havuz No *</label>
               <input
-                {...register("poolId", { valueAsNumber: true })}
+                {...register("poolNumber", { valueAsNumber: true })}
                 type="number"
                 min={1}
                 max={50}
                 className="w-full border border-form-border rounded-xl px-3 py-2.5 text-[14px] text-brand focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand"
               />
-              {errors.poolId && <p className="text-red-500 text-xs mt-1">{errors.poolId.message}</p>}
+              {errors.poolNumber && <p className="text-red-500 text-xs mt-1">{errors.poolNumber.message}</p>}
             </div>
             <div>
               <label className="block text-sm font-medium text-brand mb-1.5">Sinif *</label>

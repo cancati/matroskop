@@ -21,21 +21,21 @@ export async function POST() {
     where: { studentId: student.id, status: { in: ["PENDING", "IN_PROGRESS"] } },
     include: {
       answers: {
-        include: { question: { select: { content: true, options: true, poolId: true } } },
+        include: { question: { select: { content: true, options: true, poolNumber: true } } },
       },
     },
   })
 
-  if (existingExam) {
+  if (existingExam && existingExam.answers.length > 0) {
     const sorted = existingExam.answers.sort(
-      (a, b) => a.question.poolId - b.question.poolId
+      (a, b) => a.question.poolNumber - b.question.poolNumber
     )
     return NextResponse.json({
       examId: existingExam.id,
       questions: sorted.map((a) => ({
         id: a.id,
         questionId: a.questionId,
-        poolId: a.question.poolId,
+        poolNumber: a.question.poolNumber,
         content: a.question.content,
         options: a.question.options,
         selected: a.selected,
@@ -43,16 +43,16 @@ export async function POST() {
     })
   }
 
-  const selectedQuestions: { poolId: number; questionId: string }[] = []
+  const selectedQuestions: { poolNumber: number; questionId: string }[] = []
 
-  for (let poolId = 1; poolId <= 50; poolId++) {
+  for (let poolNumber = 1; poolNumber <= 50; poolNumber++) {
     const pool = await prisma.question.findMany({
-      where: { poolId, grade, isActive: true },
+      where: { poolNumber, grade, isActive: true },
       select: { id: true },
     })
     if (pool.length === 0) continue
     const chosen = pool[Math.floor(Math.random() * pool.length)]
-    selectedQuestions.push({ poolId, questionId: chosen.id })
+    selectedQuestions.push({ poolNumber, questionId: chosen.id })
   }
 
   if (selectedQuestions.length === 0)
@@ -61,9 +61,15 @@ export async function POST() {
       { status: 400 }
     )
 
-  const exam = await prisma.exam.create({
-    data: { studentId: student.id, grade, status: "IN_PROGRESS", startedAt: new Date() },
-  })
+  // Boş sınav varsa onu kullan, yoksa yeni oluştur
+  const exam = existingExam
+    ? await prisma.exam.update({
+        where: { id: existingExam.id },
+        data: { status: "IN_PROGRESS", startedAt: new Date() },
+      })
+    : await prisma.exam.create({
+        data: { studentId: student.id, grade, status: "IN_PROGRESS", startedAt: new Date() },
+      })
 
   await prisma.$transaction(
     selectedQuestions.map(({ questionId }) =>
@@ -75,10 +81,10 @@ export async function POST() {
 
   const answers = await prisma.examAnswer.findMany({
     where: { examId: exam.id },
-    include: { question: { select: { content: true, options: true, poolId: true } } },
+    include: { question: { select: { content: true, options: true, poolNumber: true } } },
   })
 
-  const sorted = answers.sort((a, b) => a.question.poolId - b.question.poolId)
+  const sorted = answers.sort((a, b) => a.question.poolNumber - b.question.poolNumber)
 
   return NextResponse.json(
     {
@@ -86,7 +92,7 @@ export async function POST() {
       questions: sorted.map((a) => ({
         id: a.id,
         questionId: a.questionId,
-        poolId: a.question.poolId,
+        poolNumber: a.question.poolNumber,
         content: a.question.content,
         options: a.question.options,
         selected: a.selected,

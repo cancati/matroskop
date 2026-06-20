@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
   }
 
   const [data, total] = await prisma.$transaction([
-    prisma.question.findMany({ where, take: limit, skip, orderBy: { poolId: "asc" } }),
+    prisma.question.findMany({ where, take: limit, skip, orderBy: { poolNumber: "asc" } }),
     prisma.question.count({ where }),
   ])
 
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   const admin = requireAdmin()
   if (!admin) return NextResponse.json({ message: "Yetkisiz." }, { status: 401 })
 
-  const { content, options, correctAnswer, poolId, grade, category } = await req.json()
+  const { content, options, correctAnswer, poolNumber, grade, category } = await req.json()
 
   if (!content || content.trim().length < 5)
     return NextResponse.json({ message: "Soru metni en az 5 karakter olmalidir." }, { status: 400 })
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "4-6 arasi sik girilmelidir." }, { status: 400 })
   if (typeof correctAnswer !== "number" || correctAnswer < 0 || correctAnswer >= options.length)
     return NextResponse.json({ message: "Dogru sik gecersiz." }, { status: 400 })
-  if (!poolId || poolId < 1 || poolId > 50)
+  if (!poolNumber || poolNumber < 1 || poolNumber > 50)
     return NextResponse.json({ message: "Havuz ID 1-50 arasinda olmalidir." }, { status: 400 })
   if (!grade || grade < 1 || grade > 8)
     return NextResponse.json({ message: "Sinif 1-8 arasinda olmalidir." }, { status: 400 })
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       content: content.trim(),
       options: options.map((o: string) => o.trim()),
       correctAnswer,
-      poolId,
+      poolNumber,
       grade,
       category,
     },

@@ -43,16 +43,16 @@ export async function POST(req: NextRequest) {
 
   const grade = student.classroom?.grade ?? 3
 
-  const selectedQuestions: { poolId: number; questionId: string }[] = []
+  const selectedQuestions: { poolNumber: number; questionId: string }[] = []
 
-  for (let poolId = 1; poolId <= 50; poolId++) {
+  for (let poolNumber = 1; poolNumber <= 50; poolNumber++) {
     const pool = await prisma.question.findMany({
-      where: { poolId, grade, isActive: true },
+      where: { poolNumber, grade, isActive: true },
       select: { id: true },
     })
     if (pool.length === 0) continue
     const chosen = pool[Math.floor(Math.random() * pool.length)]
-    selectedQuestions.push({ poolId, questionId: chosen.id })
+    selectedQuestions.push({ poolNumber, questionId: chosen.id })
   }
 
   if (selectedQuestions.length === 0)

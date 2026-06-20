@@ -115,6 +115,7 @@
 - [ ] Okul Yöneticisi dashboard istatistikleri (şu an stub)
 - [ ] Tedarikçi dashboard istatistikleri (şu an stub)
 - [ ] `scripts/import-bolum-metinleri.ts` çalıştırılacak (1808 kayıt DB'ye yüklenecek)
+- [ ] `scripts/import-questions.ts` çalıştırılacak (1019 soru + Supabase Storage görselleri)
 
 ### Düşük Öncelik / Sonraki Faz
 - [ ] Şifremi unuttum akışı (e-posta ile sıfırlama)
@@ -155,4 +156,6 @@
 ### Genel
 - Seed: `npx prisma db seed`
 - Branch: `dev` → geliştirme · `main` → canlı (Vercel production)
-- Bölüm metinleri import: `npx ts-node --project tsconfig.json scripts/import-bolum-metinleri.ts`
+- Bölüm metinleri import: `npx ts-node --project tsconfig.scripts.json scripts/import-bolum-metinleri.ts`
+- Soru import: `npx ts-node --project tsconfig.scripts.json scripts/import-questions.ts`
+- Soru import öncesi migration: `npx prisma migrate deploy` (externalId alanı eklendi)
