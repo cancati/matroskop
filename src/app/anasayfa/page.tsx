@@ -241,8 +241,15 @@ function LearningFramework() {
               <span className="text-[28px] lg:text-[36px] font-bold text-brand block leading-tight">Geliştiriyoruz.</span>
             </div>
 
+            <a
+              href="#nasil-calisir"
+              className="inline-flex items-center gap-2 mt-8 bg-brand text-white rounded-full px-6 py-3 text-[14px] font-semibold hover:bg-brand-dark transition-colors"
+            >
+              Nasıl Çalışır? →
+            </a>
+
             {/* Seviye rotası */}
-            <div className="mt-10 bg-brand-light rounded-2xl p-5">
+            <div className="mt-8 bg-brand-light rounded-2xl p-5">
               <div className="text-[11px] font-bold text-brand/50 uppercase tracking-widest mb-4">Bireysel Öğrenme Rotası</div>
               <div className="flex items-start w-full">
                 {[
@@ -333,6 +340,179 @@ function LearningFramework() {
 }
 
 
+
+// ─── NASIL ÇALIŞIR ────────────────────────────────────────────────────────────
+function HowItWorks() {
+  const steps = [
+    {
+      num: '01',
+      badge: 'Tanı',
+      badgeBg: 'bg-blue-600',
+      bg: 'bg-blue-50',
+      border: 'border-blue-100',
+      numColor: 'text-blue-100',
+      titleColor: 'text-blue-700',
+      title: 'Seviyeni Belirle',
+      desc: 'Sistem, 50 sorudan oluşan dijital bir tanıma testi ile başlar. Öğrencinin matematiksel yeterlik düzeyi belirlenir, güçlü yönleri ve gelişim alanları analiz edilir. Test sonunda ayrıntılı bir rapor sunulur.',
+      visual: (
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-blue-100 w-full">
+          <div className="text-[9px] font-bold text-brand/40 uppercase tracking-widest mb-2">Matematiksel Beceri Raporu</div>
+          <div className="flex items-center gap-2.5 mb-3">
+            <div className="w-10 h-10 rounded-full bg-brand flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-black text-[10px]">B1</span>
+            </div>
+            <div>
+              <div className="text-[11px] font-bold text-brand">Orta Seviye</div>
+              <div className="text-[9px] text-muted">Genel Beceri Düzeyi</div>
+            </div>
+          </div>
+          {[
+            { label: 'Müfredat Temel Beceriler', pct: 77, color: 'bg-blue-500' },
+            { label: 'Uygulamalı Mat. Becerileri', pct: 54, color: 'bg-accent-yellow' },
+            { label: 'Matematik Okuryazarlığı', pct: 61, color: 'bg-emerald-500' },
+          ].map(s => (
+            <div key={s.label} className="mb-1.5">
+              <div className="flex justify-between text-[9px] mb-0.5">
+                <span className="text-brand/60">{s.label}</span>
+                <span className="font-bold text-brand">{s.pct}</span>
+              </div>
+              <div className="h-1.5 bg-surface-section rounded-full overflow-hidden">
+                <div className={`h-full rounded-full ${s.color}`} style={{ width: `${s.pct}%` }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      num: '02',
+      badge: 'Geliştir',
+      badgeBg: 'bg-emerald-600',
+      bg: 'bg-emerald-50',
+      border: 'border-emerald-100',
+      numColor: 'text-emerald-100',
+      titleColor: 'text-emerald-700',
+      title: 'Kişisel Yolculuğun',
+      desc: 'PISA ve TIMSS standartları doğrultusunda hazırlanmış Matroskop Ders Kitapları ile matematik becerileri sistematik biçimde geliştirilir. İçerikler öğrencinin seviyesine göre kişiselleştirilir.',
+      visual: (
+        <div className="flex items-end justify-center gap-3 w-full py-1">
+          {[
+            { sub: '3. Sınıf · 1. Kitap', bg: 'bg-brand', badge: 'B1', h: 'h-32' },
+            { sub: '3. Sınıf · 2. Kitap', bg: 'bg-[#c9960a]', badge: 'B1+', h: 'h-28' },
+          ].map((book, i) => (
+            <div key={i} className={`${book.bg} ${book.h} w-24 rounded-xl p-3 flex flex-col justify-between shadow-md`}>
+              <div>
+                <div className="text-[7px] font-bold text-white/60 uppercase tracking-wide mb-1">MATROSKOP</div>
+                <div className="text-[9px] font-bold text-white leading-tight">Matematik<br />Ders Kitabı</div>
+                <div className="text-[8px] text-white/70 mt-1">{book.sub}</div>
+              </div>
+              <div className="bg-white/20 rounded-lg py-1 text-center">
+                <span className="text-white font-black text-[10px]">{book.badge}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      num: '03',
+      badge: 'Takip Et',
+      badgeBg: 'bg-purple-600',
+      bg: 'bg-purple-50',
+      border: 'border-purple-100',
+      numColor: 'text-purple-100',
+      titleColor: 'text-purple-700',
+      title: 'Sürekli İlerle',
+      desc: 'Kişiselleştirilmiş dijital destekle ilerleme izlenir. Performans verilerine göre şekillenen sistem sayesinde öğrenciler mevcut düzeylerini güçlendirir ve hedef düzeye ulaşır.',
+      visual: (
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-purple-100 w-full">
+          <div className="flex justify-between items-center mb-3">
+            <div className="text-[9px] font-bold text-brand/40 uppercase tracking-widest">Bu Hafta</div>
+            <div className="text-[9px] font-bold text-purple-600 bg-purple-50 border border-purple-100 rounded-full px-2 py-0.5">4 Aktif Gün</div>
+          </div>
+          <div className="flex items-center gap-2 mb-3 bg-surface-section rounded-xl p-2">
+            <div className="w-9 h-9 rounded-full bg-brand/10 border-2 border-brand/20 flex items-center justify-center flex-shrink-0">
+              <span className="text-brand font-black text-[9px]">B1</span>
+            </div>
+            <div className="flex-1 h-0.5 bg-brand/10" />
+            <span className="text-brand/25 text-sm">→</span>
+            <div className="flex-1 h-0.5 bg-brand/10" />
+            <div className="w-9 h-9 rounded-full bg-purple-500 border-2 border-purple-300 flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-black text-[9px]">B1+</span>
+            </div>
+          </div>
+          {[
+            { label: 'Doğru Cevap Oranı', value: '%78' },
+            { label: 'Çalışma Süresi', value: '240 dk' },
+            { label: 'Tamamlanan Görev', value: '8' },
+          ].map(item => (
+            <div key={item.label} className="flex justify-between text-[10px] py-1 border-b border-surface-section last:border-0">
+              <span className="text-brand/50">{item.label}</span>
+              <span className="font-bold text-brand">{item.value}</span>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+  ]
+
+  return (
+    <section id="nasil-calisir" className="bg-white py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6 sm:px-12">
+        <div className="text-center mb-16">
+          <span className="bg-brand-light text-brand rounded-full px-4 py-1.5 text-[13px] font-semibold inline-block mb-4">
+            SİSTEMİMİZ
+          </span>
+          <h2 className="text-[32px] lg:text-[52px] font-bold text-brand leading-tight">Nasıl Çalışır?</h2>
+          <div className="w-16 h-1 bg-accent-yellow rounded mx-auto mt-4" />
+        </div>
+
+        {/* Desktop */}
+        <div className="hidden md:flex items-stretch gap-0">
+          {steps.map((step, i) => (
+            <div key={step.num} className="flex items-stretch flex-1 min-w-0">
+              <div className={`flex-1 ${step.bg} border ${step.border} rounded-3xl p-7 relative overflow-hidden flex flex-col`}>
+                <div className={`absolute top-4 right-4 text-[72px] font-black ${step.numColor} leading-none pointer-events-none select-none`}>
+                  {step.num}
+                </div>
+                <div className={`inline-flex ${step.badgeBg} text-white text-[11px] font-bold px-3 py-1 rounded-full mb-5 self-start`}>
+                  {step.badge}
+                </div>
+                <div className="flex-1 flex items-end mb-5">
+                  {step.visual}
+                </div>
+                <h3 className={`text-[20px] font-bold ${step.titleColor} mb-2`}>{step.title}</h3>
+                <p className="text-[13px] text-brand/55 leading-relaxed">{step.desc}</p>
+              </div>
+              {i < steps.length - 1 && (
+                <div className="w-12 flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl text-brand/20 font-black">→</span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile */}
+        <div className="flex flex-col gap-5 md:hidden">
+          {steps.map(step => (
+            <div key={step.num} className={`${step.bg} border ${step.border} rounded-3xl p-6 relative overflow-hidden`}>
+              <div className={`absolute top-4 right-4 text-[60px] font-black ${step.numColor} leading-none pointer-events-none select-none`}>
+                {step.num}
+              </div>
+              <div className={`inline-flex ${step.badgeBg} text-white text-[11px] font-bold px-3 py-1 rounded-full mb-4`}>
+                {step.badge}
+              </div>
+              <div className="mb-4">{step.visual}</div>
+              <h3 className={`text-[18px] font-bold ${step.titleColor} mb-1.5`}>{step.title}</h3>
+              <p className="text-[13px] text-brand/55 leading-relaxed">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
 
 // ─── REFERANSLAR ─────────────────────────────────────────────────────────────
 interface TestimonialItem { id: string; quote: string; author: string; role: string; photoUrl: string | null }
@@ -674,6 +854,7 @@ export default function AnasayfaPage() {
       <Hero />
       <StatsBar />
       <LearningFramework />
+      <HowItWorks />
       <Testimonials />
       <Dealers />
       <Contact />
