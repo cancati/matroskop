@@ -207,6 +207,19 @@ model ExamAnswer {
   @@unique([examId, questionId])
 }
 
+// ─── KULLANICI YORUMLARI ──────────────────────────────────────
+model Testimonial {
+  id        String   @id @default(cuid())
+  quote     String
+  author    String
+  role      String
+  photoUrl  String?
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // ─── SINAV SONUCU (G57/G58/G59/G76) ─────────────────────────
 model ExamResult {
   id    String @id @default(cuid())

@@ -3,7 +3,7 @@ import {
   LayoutDashboard, School, Building2, Users,
   BookOpen, ClipboardList, ArrowLeftRight,
   FileText, GraduationCap, BookCheck,
-  UserCircle, BarChart2,
+  UserCircle, BarChart2, MessageSquare,
 } from "lucide-react"
 import type { ElementType } from "react"
 
@@ -32,6 +32,7 @@ export const NAV_ITEMS: Record<UserRole, NavItem[]> = {
     { label: "Sinav Sablonlari", href: "/sistem-yoneticisi/sinav-sablonlari", icon: ClipboardList },
     { label: "Transferler",      href: "/sistem-yoneticisi/transferler",      icon: ArrowLeftRight },
     { label: "Raporlar",         href: "/sistem-yoneticisi/raporlar",         icon: FileText },
+    { label: "Yorumlar",         href: "/sistem-yoneticisi/yorumlar",         icon: MessageSquare },
   ],
 
   SCHOOL_ADMIN: [

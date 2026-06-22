@@ -97,6 +97,17 @@ export interface TransferWithRelations {
   toSchoolName: string
 }
 
+export interface TestimonialData {
+  id:        string
+  quote:     string
+  author:    string
+  role:      string
+  photoUrl:  string | null
+  isActive:  boolean
+  order:     number
+  createdAt: string
+}
+
 export interface PaginatedResponse<T> {
   data: T[]
   total: number
