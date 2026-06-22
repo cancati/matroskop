@@ -6,7 +6,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // ─── ROLLER ──────────────────────────────────────────────────
@@ -152,16 +151,18 @@ enum TransferStatus {
 
 // ─── SORU BANKASI ─────────────────────────────────────────────
 // Kategori-havuz eşleşmesi:
-//   G57 (Akademik Matematik,      %40) → poolId  1-20 (20 soru)
-//   G58 (İleri Matematik,         %30) → poolId 21-35 (15 soru)
-//   G59 (Matematik Okuryazarlığı, %30) → poolId 36-50 (15 soru)
+//   G57 (Akademik Matematik,      %40) → poolNumber  1-20 (20 soru)
+//   G58 (İleri Matematik,         %30) → poolNumber 21-35 (15 soru)
+//   G59 (Matematik Okuryazarlığı, %30) → poolNumber 36-50 (15 soru)
 model Question {
   id            String   @id @default(cuid())
-  content       String   // soru metni (HTML olabilir)
-  options       String[] // şıklar (4-6 arası)
-  correctAnswer Int      // doğru şık index'i (0'dan başlar)
-  poolId        Int      // 1-50 (hangi havuz)
-  grade         Int      // 1-8 (hangi sınıf)
+  externalId    Int?     @unique // orijinal matroskop soru ID'si (idempotent import için)
+  content       String   // HTML içerik, görseller dahil
+  options       String[] // en fazla 6 şık, her biri HTML string
+  correctAnswer Int      // 0-indexed, 0-5 arası (kaynak 1-indexed, import sırasında -1 yapılır)
+  poolNumber    Int      // havuz numarası (1-50), sınav oluşturmada havuz seçimi için
+  poolType      String   @default("T1") // T1 = tek doğru cevap
+  grade         Int?     // 1-8 (hangi sınıf düzeyi — null: tüm sınıflar)
   category      String   // "G57" | "G58" | "G59"
   isActive      Boolean  @default(true)
   createdAt     DateTime @default(now())

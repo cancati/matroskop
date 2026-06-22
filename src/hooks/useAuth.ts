@@ -2,19 +2,31 @@
 
 import { useRouter } from "next/navigation"
 import { useAuthStore } from "@/store/auth.store"
-import { login, getDashboard } from "@/lib/auth"
+import { getDashboard } from "@/lib/auth"
 
 export function useAuth() {
   const { user, isAuthenticated, setUser, logout } = useAuthStore()
   const router = useRouter()
 
-  const signIn = async (email: string, password: string, rememberMe = false) => {
-    const loggedInUser = await login(email, password)
-    setUser(loggedInUser, rememberMe)
-    router.push(getDashboard(loggedInUser.role))
+  const signIn = async (identifier: string, password: string, rememberMe = false) => {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ identifier, password }),
+    })
+
+    const data = await res.json()
+
+    if (!res.ok) {
+      throw new Error(data.message ?? "Giriş başarısız.")
+    }
+
+    setUser(data.user, rememberMe)
+    router.push(getDashboard(data.user.role))
   }
 
-  const signOut = () => {
+  const signOut = async () => {
+    await fetch("/api/auth/logout", { method: "POST" })
     logout()
     router.push("/giris")
   }

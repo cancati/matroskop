@@ -1,16 +1,9 @@
-"use client"
-
-import { useEffect } from "react"
-import { LoginForm } from "@/components/auth/LoginForm"
-import { useAuth } from "@/hooks/useAuth"
+import { redirect } from "next/navigation"
+import GirisClient from "./GirisClient"
 
 export default function GirisPage() {
-  const { redirectIfAuthenticated } = useAuth()
-
-  useEffect(() => {
-    redirectIfAuthenticated()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  return <LoginForm />
+  if (process.env.PANEL_ENABLED !== "true") {
+    redirect("/anasayfa")
+  }
+  return <GirisClient />
 }
