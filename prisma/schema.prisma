@@ -1,0 +1,232 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── ROLLER ──────────────────────────────────────────────────
+enum Role {
+  SYSTEM_ADMIN
+  SCHOOL_ADMIN
+  TEACHER
+  STUDENT
+  SUPPLIER
+}
+
+// ─── TEDARİKÇİ ───────────────────────────────────────────────
+model Supplier {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String?
+  address   String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users     User[]
+  students  StudentSupplier[]
+}
+
+// ─── OKUL ─────────────────────────────────────────────────────
+model School {
+  id        String   @id @default(cuid())
+  name      String
+  city      String?
+  phone     String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users      User[]
+  classrooms Classroom[]
+  students   Student[]
+}
+
+// ─── KULLANICI ────────────────────────────────────────────────
+model User {
+  id        String   @id @default(cuid())
+  email     String?  @unique   // adminler/ogretmenler/tedarikciler icin
+  username  String?  @unique   // ogrenciler icin
+  password  String
+  name      String
+  role      Role
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  schoolId    String?
+  school      School?   @relation(fields: [schoolId], references: [id])
+
+  supplierId  String?
+  supplier    Supplier? @relation(fields: [supplierId], references: [id])
+
+  classrooms  Classroom[]
+  student     Student?
+}
+
+// ─── SINIF ────────────────────────────────────────────────────
+model Classroom {
+  id        String   @id @default(cuid())
+  name      String   // örn: "6-A"
+  grade     Int      // 1-8
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  schoolId  String
+  school    School  @relation(fields: [schoolId], references: [id])
+
+  teacherId String
+  teacher   User    @relation(fields: [teacherId], references: [id])
+
+  students  Student[]
+}
+
+// ─── ÖĞRENCİ ─────────────────────────────────────────────────
+model Student {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Her öğrenci bir User'a bağlı (1-1)
+  userId    String @unique
+  user      User   @relation(fields: [userId], references: [id])
+
+  // Max 1 okul
+  schoolId    String?
+  school      School?    @relation(fields: [schoolId], references: [id])
+
+  // Max 1 sınıf
+  classroomId String?
+  classroom   Classroom? @relation(fields: [classroomId], references: [id])
+
+  // Tedarikçi ilişkisi (ayrı tablo — transfer geçmişi için)
+  suppliers   StudentSupplier[]
+
+  // Sınavlar
+  exams       Exam[]
+
+  // Transfer talepleri
+  transfers   Transfer[]
+}
+
+// ─── ÖĞRENCİ-TEDARİKÇİ (M-M, aktif sadece 1 olabilir) ────────
+model StudentSupplier {
+  id         String   @id @default(cuid())
+  isActive   Boolean  @default(true) // aynı anda sadece 1 aktif
+  assignedAt DateTime @default(now())
+  removedAt  DateTime?
+
+  studentId  String
+  student    Student  @relation(fields: [studentId], references: [id])
+
+  supplierId String
+  supplier   Supplier @relation(fields: [supplierId], references: [id])
+
+  @@unique([studentId, supplierId])
+}
+
+// ─── TRANSFER ─────────────────────────────────────────────────
+model Transfer {
+  id          String         @id @default(cuid())
+  status      TransferStatus @default(PENDING)
+  fromSchoolId String?
+  toSchoolId   String
+  requestedAt  DateTime       @default(now())
+  resolvedAt   DateTime?
+  note         String?
+
+  studentId   String
+  student     Student @relation(fields: [studentId], references: [id])
+}
+
+enum TransferStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// ─── SORU BANKASI ─────────────────────────────────────────────
+// Kategori-havuz eşleşmesi:
+//   G57 (Akademik Matematik,      %40) → poolId  1-20 (20 soru)
+//   G58 (İleri Matematik,         %30) → poolId 21-35 (15 soru)
+//   G59 (Matematik Okuryazarlığı, %30) → poolId 36-50 (15 soru)
+model Question {
+  id            String   @id @default(cuid())
+  content       String   // soru metni (HTML olabilir)
+  options       String[] // şıklar (4-6 arası)
+  correctAnswer Int      // doğru şık index'i (0'dan başlar)
+  poolId        Int      // 1-50 (hangi havuz)
+  grade         Int      // 1-8 (hangi sınıf)
+  category      String   // "G57" | "G58" | "G59"
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  examAnswers   ExamAnswer[]
+}
+
+// ─── SINAV ────────────────────────────────────────────────────
+model Exam {
+  id        String     @id @default(cuid())
+  grade     Int        // sınav anındaki öğrenci sınıfı
+  status    ExamStatus @default(PENDING)
+  startedAt DateTime?
+  endedAt   DateTime?
+  createdAt DateTime   @default(now())
+
+  studentId String
+  student   Student    @relation(fields: [studentId], references: [id])
+
+  answers   ExamAnswer[]
+  result    ExamResult?
+}
+
+enum ExamStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+model ExamAnswer {
+  id        String  @id @default(cuid())
+  selected  Int     // seçilen şık index'i (0'dan başlar)
+  isCorrect Boolean // doğru mu
+
+  examId String
+  exam   Exam   @relation(fields: [examId], references: [id])
+
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+
+  @@unique([examId, questionId])
+}
+
+// ─── KULLANICI YORUMLARI ──────────────────────────────────────
+model Testimonial {
+  id        String   @id @default(cuid())
+  quote     String
+  author    String
+  role      String
+  photoUrl  String?
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── SINAV SONUCU (G57/G58/G59/G76) ─────────────────────────
+model ExamResult {
+  id    String @id @default(cuid())
+  G57   Float  // Akademik Matematik (ağırlık 0.40)
+  G58   Float  // İleri Matematik Becerileri (ağırlık 0.30)
+  G59   Float  // Matematik Okuryazarlığı (ağırlık 0.30)
+  G76   Float  // Genel Puan = G57*0.4 + G58*0.3 + G59*0.3
+  level String // A1 | A2 | B1 | B2 | C1 | C2
+
+  examId String @unique
+  exam   Exam   @relation(fields: [examId], references: [id])
+}

@@ -1,31 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
-  Menu, X, Phone, Mail, MapPin, ArrowRight,
+  Menu, X, Phone, Mail, MapPin,
   Target, BarChart2, BookOpen, TrendingUp, Shield,
-  Plus, Star, Users, BookMarked,
+  Plus,
   GraduationCap, Headphones, DollarSign, Handshake,
-  CheckCircle,
 } from 'lucide-react';
 
 // ─── NAVBAR ──────────────────────────────────────────────────────────────────
 function Navbar() {
   const [open, setOpen] = useState(false);
   const links = [
-    { label: 'Anasayfa',   href: '#giris' },
+    { label: 'Anasayfa',   href: '#anasayfa' },
     { label: 'Matroskop',  href: '#matroskop' },
-    { label: 'Hakkımızda', href: '#hakkimizda' },
-    { label: 'Bayiler',    href: '#bayiler' },
+    { label: 'Akademiler', href: '#akademiler' },
+    { label: 'Kurumlar',   href: '#kurumlar' },
     { label: 'İletişim',   href: '#iletisim' },
   ];
 
   return (
     <nav className="sticky top-0 z-50 h-[72px] flex items-center relative bg-white/90 backdrop-blur-md border-b border-surface-section">
       <div className="mx-auto max-w-7xl w-full px-6 sm:px-12 flex items-center justify-between">
-        <a href="#giris" className="flex items-center">
+        <a href="#anasayfa" className="flex items-center">
           <div className="relative h-10 w-40">
             <Image src="/images/matroskoplogo2.png" alt="Matroskop" fill className="object-contain object-left" />
           </div>
@@ -39,9 +38,9 @@ function Navbar() {
           ))}
         </div>
 
-        <button className="hidden md:block border-2 border-brand text-brand rounded-full px-6 py-2 text-[14px] font-semibold hover:bg-brand hover:text-white transition-all">
+        <a href="/giris" className="hidden md:block border-2 border-brand text-brand rounded-full px-6 py-2 text-[14px] font-semibold hover:bg-brand hover:text-white transition-all">
           Giriş Yap
-        </button>
+        </a>
 
         <button onClick={() => setOpen(!open)} className="md:hidden">
           {open ? <X className="w-6 h-6 text-brand" /> : <Menu className="w-6 h-6 text-brand" />}
@@ -56,9 +55,9 @@ function Navbar() {
                 {label}
               </a>
             ))}
-            <button className="border-2 border-brand text-brand rounded-full py-2 text-sm font-semibold mt-2">
+            <a href="/giris" className="border-2 border-brand text-brand rounded-full py-2 text-sm font-semibold mt-2 text-center">
               Giriş Yap
-            </button>
+            </a>
           </div>
         </div>
       )}
@@ -77,7 +76,7 @@ function Hero() {
   ];
 
   return (
-    <section id="giris" className="bg-surface min-h-[calc(100dvh-72px)] flex flex-col relative">
+    <section id="anasayfa" className="bg-surface min-h-[calc(100dvh-72px)] flex flex-col relative">
 
       {/* Mobil arka plan — bulanık fotoğraf */}
       <div className="absolute inset-0 lg:hidden overflow-hidden">
@@ -104,12 +103,6 @@ function Hero() {
                 Matroskop bireysel ölçme sistemi, öğrencileri PISA ve TIMSS kriterlerine
                 göre analiz eder. Her öğrenciye seviyesine uygun öğrenme yolu oluşturulur.
               </p>
-              <div className="mt-7 flex flex-row gap-4">
-                <a href="#nasil" className="bg-brand text-white rounded-full px-10 py-4 text-[17px] font-semibold hover:shadow-lg transition-shadow inline-flex items-center gap-2">
-                  Nasıl Çalışır?
-                  <ArrowRight className="w-5 h-5" />
-                </a>
-              </div>
               <div className="mt-8 flex flex-wrap gap-3">
                 {features.map(({ icon: Icon, label }) => (
                   <div key={label} className="flex items-center gap-2 text-[12px] lg:text-[13px] text-brand/80 font-medium">
@@ -133,72 +126,7 @@ function Hero() {
                 <Image src="/images/hero-child.png" alt="Öğrenci" fill className="object-cover object-center" />
               </div>
 
-              {/* PISA badge — fotoğrafın sol üst sınırında */}
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-                className="hidden lg:flex absolute top-10 -left-5 z-20 bg-white rounded-2xl shadow-[0_8px_32px_rgba(3,49,71,0.18)] px-4 py-3 items-center gap-2.5"
-              >
-                <div className="w-7 h-7 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                </div>
-                <div>
-                  <div className="text-[10px] text-muted font-medium leading-none mb-0.5">Uluslararası Standart</div>
-                  <div className="text-[13px] font-bold text-brand leading-none">PISA–TIMSS Onaylı</div>
-                </div>
-              </motion.div>
 
-              {/* Rapor mockup — fotoğrafın sağ alt sınırında */}
-              <motion.div
-                animate={{ y: [0, -8, 0], rotate: [0, 0.4, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
-                className="hidden lg:block absolute -bottom-6 -right-6 bg-white rounded-2xl shadow-[0_16px_48px_rgba(3,49,71,0.2)] p-5 w-72 z-20"
-              >
-              <div className="text-[9px] font-bold text-muted uppercase tracking-wider mb-3">
-                Matematiksel Beceri Raporu
-              </div>
-
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-[13px] font-bold text-brand">M.Tuna KANBAY</div>
-                  <div className="text-[11px] text-muted">S/E · ÖZEL TOROS OKULLARI</div>
-                </div>
-                <span className="bg-brand-light text-brand rounded-lg px-2 py-0.5 text-[10px] font-semibold">
-                  ID 17500325
-                </span>
-              </div>
-
-              <div className="mt-3">
-                <div className="text-[11px] font-bold text-muted uppercase tracking-wider mb-2">Ölçülen Alanlar</div>
-                <div className="flex flex-col gap-2">
-                  {[
-                    { dot: 'bg-orange-400', label: 'Müfredat Temelli Beceriler',       score: '77', bg: 'bg-orange-100', color: 'text-orange-600' },
-                    { dot: 'bg-green-400',  label: 'Uygulamalı Matematik Becerileri',  score: '54', bg: 'bg-green-100',  color: 'text-green-600'  },
-                    { dot: 'bg-blue-400',   label: 'Matematik Okuryazarlığı',          score: '61', bg: 'bg-blue-100',   color: 'text-blue-600'   },
-                  ].map(({ dot, label, score, bg, color }) => (
-                    <div key={label} className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className={`w-2 h-2 rounded-full ${dot} flex-shrink-0`} />
-                        <span className="text-[11px] text-brand/80">{label}</span>
-                      </div>
-                      <span className={`${bg} ${color} rounded-lg px-2 py-0.5 text-[11px] font-bold`}>{score}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-3 flex items-center gap-3">
-                <div className="flex flex-col items-center gap-1 flex-shrink-0">
-                  <div className="w-16 h-16 bg-brand rounded-full flex items-center justify-center">
-                    <span className="text-2xl font-black text-orange-400 leading-none">B1</span>
-                  </div>
-                  <span className="text-[9px] text-muted leading-none">Orta Seviye</span>
-                </div>
-                <p className="text-[10px] text-muted leading-relaxed">
-                  Değerlendirmeler 100 Gösterenden yapılmıştır.
-                </p>
-              </div>
-            </motion.div>
 
             </div>{/* /fotoğraf relative wrapper */}
           </div>{/* /col-span-7 */}
@@ -244,12 +172,6 @@ function Hero() {
           ))}
         </div>
 
-        <div className="flex flex-col gap-3">
-          <a href="#nasil" className="bg-accent-yellow text-brand rounded-full px-6 py-4 text-[16px] font-bold text-center inline-flex items-center justify-center gap-2">
-            Nasıl Çalışır?
-            <ArrowRight className="w-5 h-5" />
-          </a>
-        </div>
       </div>
 
     </section>
@@ -258,18 +180,26 @@ function Hero() {
 
 // ─── STATS BAR ───────────────────────────────────────────────────────────────
 function StatsBar() {
+  const stats = [
+    { value: '400+',    label: 'Akademi' },
+    { value: '350+',    label: 'Kurum' },
+    { value: '90.000+', label: 'Tanıma Testi' },
+    { value: '20.000+', label: 'Kayıtlı Öğrenci' },
+  ];
+
   return (
-    <section className="bg-[#0d1f2d] py-12">
+    <section className="bg-[#0d1f2d] py-14">
       <div className="mx-auto max-w-7xl px-6 sm:px-12">
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-0 sm:divide-x sm:divide-white/20">
-          {[
-            { value: '500+', label: 'Kayıtlı Kurum' },
-            { value: '10K+', label: 'Test Uygulanan Öğrenci' },
-            { value: '6',    label: 'Seviye Kademesi (A1–C2)' },
-          ].map((stat, i) => (
-            <div key={stat.value} className={`text-center ${i > 0 ? 'sm:pl-16' : ''} ${i < 2 ? 'sm:pr-16' : ''}`}>
-              <div className="text-4xl font-black text-white">{stat.value}</div>
-              <div className="text-sm text-white/60 mt-1">{stat.label}</div>
+        <div className="text-center mb-10">
+          <h2 className="text-white text-[20px] font-semibold">Matroskop Ekosistemi</h2>
+          <div className="w-10 h-[3px] bg-blue-400 rounded mx-auto mt-2" />
+        </div>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-0 sm:divide-x sm:divide-white/20">
+          {stats.map((stat, i) => (
+            <div key={stat.label} className={`flex flex-col items-center ${i > 0 ? 'sm:pl-16' : ''} ${i < stats.length - 1 ? 'sm:pr-16' : ''}`}>
+              <div className="text-[42px] font-black text-white leading-none">{stat.value}</div>
+              <div className="w-8 h-[3px] bg-blue-400 rounded mt-2 mb-2" />
+              <div className="text-[14px] text-white/60">{stat.label}</div>
             </div>
           ))}
         </div>
@@ -402,175 +332,23 @@ function LearningFramework() {
   );
 }
 
-// ─── NASIL ÇALIŞIR ────────────────────────────────────────────────────────────
-function HowItWorks() {
-  const steps = [
-    { num: '01', title: 'Testi Uygula',         desc: 'Çevrim içi veya Matroskop Noktasında sınava gir.',              numColor: 'text-accent-yellow', border: 'border-accent-yellow/30' },
-    { num: '02', title: 'Raporu Gör',           desc: "A1'den C2'ye uzanan seviye sisteminde konumunu öğren.",         numColor: 'text-accent-blue',   border: 'border-accent-blue/30'   },
-    { num: '03', title: 'Plan Al',              desc: 'Kişiselleştirilmiş öğrenme rotanı ve haftalık planını al.',    numColor: 'text-accent-green',  border: 'border-accent-green/30'  },
-    { num: '04', title: 'Gelişimini Takip Et',  desc: 'Sürekli ölçme ve değerlendirme ile ilerlemeni izle.',          numColor: 'text-brand/30',      border: 'border-brand/15'         },
-  ];
 
-  return (
-    <div className="py-10">
-      <div className="mx-auto max-w-7xl w-full px-6 sm:px-12">
-        <div className="text-center">
-          <span className="bg-brand-light text-brand rounded-full px-4 py-1.5 text-[13px] font-semibold inline-block mb-4">
-            Süreç
-          </span>
-          <h2 className="text-[32px] lg:text-[48px] font-bold text-brand">Nasıl Çalışır?</h2>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-          {steps.map(({ num, title, desc, numColor, border }) => (
-            <div key={num} className={`bg-white rounded-2xl md:rounded-3xl p-4 md:p-8 shadow-sm relative overflow-hidden border ${border}`}>
-              <div className={`absolute -top-1 -left-1 text-5xl md:text-8xl font-black z-0 select-none leading-none ${numColor}`}>
-                {num}
-              </div>
-              <div className="relative z-10 pt-6 md:pt-8">
-                <h3 className="font-bold text-brand text-[13px] md:text-[18px]">{title}</h3>
-                <p className="text-muted text-[11px] md:text-[14px] leading-relaxed mt-1.5 md:mt-2">{desc}</p>
-                <div className="hidden md:flex mt-6 ml-auto w-8 h-8 bg-accent-yellow rounded-full items-center justify-center">
-                  <ArrowRight className="w-4 h-4 text-brand" />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── VURGU İKİLİ KART ────────────────────────────────────────────────────────
-function EmphasisCards() {
-  return (
-    <div className="pb-10 px-6 sm:px-12">
-      <div className="mx-auto max-w-7xl">
-        <div className="grid md:grid-cols-2 gap-5">
-
-          <div className="bg-accent-green rounded-3xl p-8 lg:p-10 flex justify-between items-center overflow-hidden min-h-[160px] lg:h-80">
-            <div>
-              <span className="bg-white/40 text-brand rounded-full px-3 py-1 text-[12px] font-medium inline-block">
-                Bireysel Analiz
-              </span>
-              <h3 className="text-[28px] lg:text-[36px] font-bold text-brand mt-3 leading-tight">
-                Güçlü Yönleri<br />Net Görün.
-              </h3>
-              <p className="text-brand/70 text-[13px] lg:text-[14px] mt-2 max-w-[200px]">
-                Potansiyelin bütünsel analizi ve gelişim alanları.
-              </p>
-            </div>
-            <div className="hidden sm:block relative w-32 h-48 lg:w-40 lg:h-64 flex-shrink-0">
-              <Image src="/images/emphasis-analysis.png" alt="Analiz" fill className="object-contain drop-shadow-xl" />
-            </div>
-          </div>
-
-          <div className="bg-accent-yellow rounded-3xl p-8 lg:p-10 flex justify-between items-center overflow-hidden min-h-[160px] lg:h-80">
-            <div>
-              <span className="bg-white/40 text-brand rounded-full px-3 py-1 text-[12px] font-medium inline-block">
-                Kişiselleştirilmiş
-              </span>
-              <h3 className="text-[28px] lg:text-[36px] font-bold text-brand mt-3 leading-tight">
-                Her Öğrenciye<br />Özel Program.
-              </h3>
-              <p className="text-brand/70 text-[13px] lg:text-[14px] mt-2 max-w-[200px]">
-                Seviyeye uygun hedef odaklı kişisel gelişim planı.
-              </p>
-            </div>
-            <div className="hidden sm:block relative w-32 h-48 lg:w-40 lg:h-64 flex-shrink-0">
-              <Image src="/images/emphasis-program.png" alt="Program" fill className="object-contain drop-shadow-xl" />
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── HAKKIMIZDA ──────────────────────────────────────────────────────────────
-function About() {
-  const features = [
-    { icon: BarChart2,  title: 'PISA & TIMSS',           desc: 'Odaklı Eğitim' },
-    { icon: Users,      title: 'Bireysel Gelişim',        desc: 'Odaklı Yaklaşım' },
-    { icon: BookMarked, title: 'Öğrenme Çerçevesi',       desc: 'Yapılandırılmış program' },
-    { icon: Star,       title: 'A1 → C2 Seviye Sistemi', desc: 'Kişisel gelişim rotası' },
-  ];
-
-  return (
-    <section id="hakkimizda" className="bg-surface lg:min-h-dvh flex flex-col justify-center py-10">
-      <div className="mx-auto max-w-7xl w-full px-6 sm:px-12">
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-
-          {/* Sol fotoğraf — 5 / 12 */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative h-[240px] sm:h-[340px] lg:h-[560px] rounded-3xl overflow-hidden">
-              <Image src="/images/student-studying.png" alt="Öğrenci çalışıyor" fill className="object-cover" />
-            </div>
-            <div className="absolute bottom-8 right-0 bg-white rounded-2xl shadow-xl p-4 flex gap-3 items-center">
-              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <CheckCircle className="w-4 h-4 text-green-500" />
-              </div>
-              <span className="text-[13px] font-semibold text-brand">PISA–TIMSS Onaylı</span>
-            </div>
-          </div>
-
-          {/* Sağ metin — 7 / 12 */}
-          <div className="lg:col-span-7">
-            <span className="bg-brand-light text-brand rounded-full px-4 py-1.5 text-[13px] font-semibold inline-block mb-4">
-              Hakkımızda
-            </span>
-            <h2 className="text-[32px] lg:text-[48px] font-bold text-brand leading-tight">
-              Her Çocuğun Matematiği<br />
-              <span className="text-accent-yellow italic">Farklıdır.</span>
-            </h2>
-            <p className="text-muted text-[16px] lg:text-[17px] mt-4 leading-relaxed">
-              Matroskop bireysel ölçme sistemi, öğrencilerin problem çözme ve analitik
-              düşünme becerilerini PISA &amp; TIMSS standartlarında değerlendirir.
-              A1&apos;den C2&apos;ye uzanan kişisel gelişim rotası oluşturulur.
-            </p>
-            <p className="text-brand font-semibold text-[16px] lg:text-[18px] mt-3">
-              Matroskop matematik öğretmez. Matematiği öğrenmesini sağlar.
-            </p>
-
-            <div className="mt-8 grid grid-cols-2 gap-4">
-              {features.map(({ icon: Icon, title, desc }) => (
-                <div key={title} className="bg-white rounded-2xl p-5 shadow-sm">
-                  <Icon className="w-5 h-5 text-brand mb-2" />
-                  <div className="font-bold text-brand text-[14px]">{title}</div>
-                  <div className="text-muted text-sm mt-0.5">{desc}</div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6 flex gap-4">
-              {[
-                { value: '500+', label: 'Kayıtlı Kurum' },
-                { value: '10K+', label: 'Test Uygulanan Öğrenci' },
-              ].map(stat => (
-                <div key={stat.value} className="bg-white rounded-2xl p-5 shadow-sm flex-1">
-                  <div className="text-3xl font-black text-brand">{stat.value}</div>
-                  <div className="text-muted text-sm mt-1">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-  );
-}
 
 // ─── REFERANSLAR ─────────────────────────────────────────────────────────────
+interface TestimonialItem { id: string; quote: string; author: string; role: string; photoUrl: string | null }
+
 function Testimonials() {
-  const items = [
-    { quote: 'Matroskop sayesinde öğrencilerimizin matematik seviyelerini çok daha doğru analiz edebiliyoruz.', author: 'Murat Y.',    role: 'Okul Müdürü' },
-    { quote: 'Bireyselleştirilmiş eğitim yaklaşımımıza ciddi katkı sağladı.',                                   author: 'Zehra A.',    role: 'Matematik Öğretmeni' },
-    { quote: 'Gelişim programı öğrencilerin ilerlemesini çok daha planlı hale getirdi.',                        author: 'Levent K.',   role: 'Eğitim Koordinatörü' },
-    { quote: 'Öğrencilerimizi yalnızca sınavlara değil, geleceğe hazırlıyoruz.',                                author: 'Ali Rıza G.', role: 'Eğitim Kurumu Yöneticisi' },
-  ];
+  const [items, setItems] = useState<TestimonialItem[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/public/yorumlar')
+      .then(r => r.json())
+      .then(data => { setItems(data); setLoaded(true); })
+      .catch(() => setLoaded(true));
+  }, []);
+
+  if (!loaded || items.length === 0) return null;
 
   return (
     <section className="bg-[#0d1f2d] lg:min-h-dvh flex flex-col justify-center py-10">
@@ -585,14 +363,23 @@ function Testimonials() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
-          {items.map((item, i) => (
-            <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-4 md:rounded-3xl md:p-7 flex flex-col">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
+          {items.map(item => (
+            <div key={item.id} className="bg-white/5 border border-white/10 rounded-2xl p-4 md:rounded-3xl md:p-7 flex flex-col">
               <div className="text-3xl md:text-5xl font-black text-accent-yellow leading-none">&ldquo;</div>
               <p className="text-white/80 text-[12px] md:text-[15px] leading-relaxed mt-2 md:mt-3 flex-1">{item.quote}</p>
-              <div className="mt-3 md:mt-6 pt-3 md:pt-4 border-t border-white/10">
-                <div className="font-bold text-white text-[12px] md:text-[14px]">{item.author}</div>
-                <div className="text-white/50 text-[11px] md:text-[12px]">{item.role}</div>
+              <div className="mt-3 md:mt-6 pt-3 md:pt-4 border-t border-white/10 flex items-center gap-3">
+                {item.photoUrl ? (
+                  <Image src={item.photoUrl} alt={item.author} width={36} height={36} className="w-9 h-9 rounded-full object-cover flex-shrink-0 border border-white/20" />
+                ) : (
+                  <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 text-white font-bold text-sm">
+                    {item.author.charAt(0)}
+                  </div>
+                )}
+                <div>
+                  <div className="font-bold text-white text-[12px] md:text-[14px]">{item.author}</div>
+                  <div className="text-white/50 text-[11px] md:text-[12px]">{item.role}</div>
+                </div>
               </div>
             </div>
           ))}
@@ -845,10 +632,10 @@ function Footer() {
             <div className="font-semibold mb-4">Kurumsal</div>
             <div className="flex flex-col gap-2">
               {[
-                { label: 'Anasayfa',   href: '#giris' },
+                { label: 'Anasayfa',   href: '#anasayfa' },
                 { label: 'Matroskop',  href: '#matroskop' },
-                { label: 'Hakkımızda', href: '#hakkimizda' },
-                { label: 'Bayiler',    href: '#bayiler' },
+                { label: 'Akademiler', href: '#akademiler' },
+                { label: 'Kurumlar',   href: '#kurumlar' },
                 { label: 'İletişim',   href: '#iletisim' },
               ].map(({ label, href }) => (
                 <a key={label} href={href} className="text-white/70 hover:text-white transition-colors text-[14px]">
@@ -887,11 +674,6 @@ export default function AnasayfaPage() {
       <Hero />
       <StatsBar />
       <LearningFramework />
-      <section id="nasil" className="bg-surface-section lg:min-h-dvh flex flex-col justify-center">
-        <HowItWorks />
-        <EmphasisCards />
-      </section>
-      <About />
       <Testimonials />
       <Dealers />
       <Contact />
