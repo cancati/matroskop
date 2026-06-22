@@ -16,7 +16,6 @@ export async function GET() {
     },
   })
 
-  const classroomIds = classrooms.map((c) => c.id)
   const classroomMap = Object.fromEntries(classrooms.map((c) => [c.id, c.name]))
   const studentIds = classrooms.flatMap((c) => c.students.map((s) => s.id))
   const totalStudents = studentIds.length

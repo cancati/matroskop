@@ -118,6 +118,7 @@ export function YorumModal({ item, onClose, onSaved }: Props) {
               placeholder="https://..."
             />
             {photoUrl && (
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={photoUrl} alt="Önizleme" className="w-12 h-12 rounded-full object-cover mt-2 border-2 border-surface-section" />
             )}
           </div>
